@@ -763,16 +763,20 @@
 
         // Mise à jour des liens Agendis
         function updateAgendisLinks() {
-            const dateInput = document.getElementById('gardeDate').value;
-            if (!dateInput) return;
-            
-            const date = new Date(dateInput + 'T12:00:00');
-            const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
-            
-            const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
-            const agendisLink = document.getElementById('agendisToday');
-            if (agendisLink) {
-                agendisLink.href = baseUrl + formatDate(date);
+            try {
+                const dateInput = document.getElementById('gardeDate');
+                if (!dateInput || !dateInput.value) return;
+                
+                const date = new Date(dateInput.value + 'T12:00:00');
+                const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
+                
+                const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
+                const agendisLink = document.getElementById('agendisToday');
+                if (agendisLink) {
+                    agendisLink.href = baseUrl + formatDate(date);
+                }
+            } catch (error) {
+                console.error('Erreur mise à jour liens Agendis:', error);
             }
         }
 
