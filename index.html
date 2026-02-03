@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feuille de Garde - SDIS47</title>
+    <style>
+        :root {
+            --color-red: #E31E24;
+            --color-black: #000000;
+            --color-gray-light: #f5f5f5;
+            --color-gray: #626C71;
+            --color-border: #ddd;
+            --color-success: #21808D;
+            --color-warning: #E68161;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-gray-light);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 4px solid var(--color-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 80px;
+            width: auto;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .header-info h1 {
+            font-size: 24px;
+            color: var(--color-black);
+            margin-bottom: 5px;
+        }
+
+        .header-info .date {
+            font-size: 18px;
+            color: var(--color-gray);
+            font-weight: 500;
+        }
+
+        .info-bar {
+            background: var(--color-red);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .info-bar label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .info-bar input[type="date"],
+        .info-bar input[type="text"] {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .info-bar input[type="text"] {
+            width: 200px;
+        }
+
+        .agendis-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .agendis-links a,
+        a[id="agendisToday"]:hover {
+            background: #c41a1f;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            background: var(--color-black);
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-gray);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background: var(--color-gray-light);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--color-black);
+        }
+
+        td input,
+        td select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--color-border);
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        td input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--color-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #c41a1f;
+        }
+
+        .btn-secondary {
+            background: var(--color-gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5559;
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-success:hover {
+            background: #1a6670;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .status-ok {
+            background: #d4edda;
+        }
+
+        .status-alert {
+            background: #fff3cd;
+        }
+
+        .status-error {
+            background: #f8d7da;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--color-border);
+        }
+
+            box-sizing: border-box;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .info-bar {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .actions {
+                display: none;
+            }
+            .agendis-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/b5dda112-aea7-413a-ac2c-cb7abd85e198" alt="SDIS47">
+            </div>
+            <div class="header-info">
+                <h1>FEUILLE DE GARDE JOURNALIÈRE</h1>
+                <div class="date" id="currentDate"></div>
+            </div>
+        </div>
+
+        <div class="info-bar">
+            <label>
+                Date de garde :
+                <input type="date" id="gardeDate" onchange="updateAgendisLinks()">
+            </label>
+        </div>
+
+        <div class="content">
+            <!-- Section Effectifs -->
+            <div class="section">
+                <div class="section-title">👥 EFFECTIFS DE GARDE</div>
+                <div style="margin-bottom: 15px;">
+                    <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                        Consultez le planning des effectifs sur Agendis :
+                    </p>
+                    <a href="#" id="agendisToday" target="_blank" style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s;">
+                        📅 Planning Agendis du jour
+                    </a>
+                </div>
+            </div>
+
+            <!-- Section Agent vérificateur -->
+            <div class="section">
+                <div class="section-title">✅ AGENT VÉRIFICATEUR</div>
+                <div style="margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="openAgentVerificateurPopup()">➕ Ajouter un agent pour une vérification</button>
+                </div>
+                <table id="agentVerificateurTable">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Véhicule</th>
+                            <th style="width: 80px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agentVerificateurBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section Engins -->
+            <div class="section">
+                <div class="section-title">🚒 ÉTAT DES ENGINS</div>
+                
+                <!-- Sous-section VSAV -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSAV</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                            Sélectionner un VSAV à ajouter :
+                        </label>
+                        <select id="vsavSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                            <option value="">-- Choisir un VSAV --</option>
+                            <option value="VSAV 29">VSAV 29</option>
+                            <option value="VSAV 49">VSAV 49</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEngin('vsav')">➕ Ajouter l'engin</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table style="min-width: 1400px;">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 80px;">Engin</th>
+                                    <th style="min-width: 70px;">Carburant</th>
+                                    <th style="min-width: 70px;">AdBlue</th>
+                                    <th style="min-width: 80px;">Gyrophare</th>
+                                    <th style="min-width: 80px;">Éclairage</th>
+                                    <th style="min-width: 80px;">O2 Sac 5L</th>
+                                    <th style="min-width: 80px;">O2 Cell1 5L</th>
+                                    <th style="min-width: 80px;">O2 Cell2 5L</th>
+                                    <th style="min-width: 80px;">O2 Cell 15L</th>
+                                    <th style="min-width: 90px;">Détect. CO</th>
+                                    <th style="min-width: 100px;">Multiparam.</th>
+                                    <th style="min-width: 90px;">Aspirateur</th>
+                                    <th style="min-width: 90px;">Thermo.</th>
+                                    <th style="min-width: 90px;">Glycémie</th>
+                                    <th style="min-width: 120px;">Agent</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vsavBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sous-section VSR -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSR</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                            Sélectionner un VSR à ajouter :
+                        </label>
+                        <select id="vsrSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                            <option value="">-- Choisir un VSR --</option>
+                            <option value="VSRL 93">VSRL 93</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEngin('vsr')">➕ Ajouter l'engin</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Engin</th>
+                                <th>Observations</th>
+                                <th style="width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vsrBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Sous-section FPT -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">FPT</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                            Sélectionner un FPT à ajouter :
+                        </label>
+                        <select id="fptSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                            <option value="">-- Choisir un FPT --</option>
+                            <option value="FPT 85">FPT 85</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEngin('fpt')">➕ Ajouter l'engin</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Engin</th>
+                                <th>Observations</th>
+                                <th style="width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fptBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Sous-section UCCF -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">UCCF</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                            Sélectionner un UCCF à ajouter :
+                        </label>
+                        <select id="uccfSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                            <option value="">-- Choisir un UCCF --</option>
+                            <option value="UCCFM 74">UCCFM 74</option>
+                            <option value="UCCFM 75">UCCFM 75</option>
+                            <option value="UCCFS 98">UCCFS 98</option>
+                            <option value="UCCFS 99">UCCFS 99</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEngin('uccf')">➕ Ajouter l'engin</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Engin</th>
+                                <th>Observations</th>
+                                <th style="width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="uccfBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Sous-section VL -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VL</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                            Sélectionner un VL à ajouter :
+                        </label>
+                        <select id="vlSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                            <option value="">-- Choisir un VL --</option>
+                            <option value="VLRTT 38">VLRTT 38</option>
+                            <option value="VLRTT 45">VLRTT 45</option>
+                            <option value="VLRTT 76">VLRTT 76</option>
+                            <option value="VLU 39">VLU 39</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEngin('vl')">➕ Ajouter l'engin</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Engin</th>
+                                <th>Observations</th>
+                                <th style="width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vlBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Section Événements -->
+            <div class="section">
+                <div class="section-title">📋 JOURNAL DES ÉVÉNEMENTS</div>
+                <table id="evenementsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Heure</th>
+                            <th style="width: 150px;">Type</th>
+                            <th>Événement / Intervention</th>
+                            <th style="width: 80px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evenementsBody">
+                        <tr>
+                            <td><input type="time"></td>
+                            <td>
+                                <select>
+                                    <option value="info">ℹ️ Information</option>
+                                    <option value="intervention">🚨 Intervention</option>
+                                    <option value="exercice">🎯 Exercice</option>
+                                    <option value="technique">🔧 Technique</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Description de l'événement"></td>
+                            <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" onclick="addEvenement()">➕ Ajouter un événement</button>
+            </div>
+
+            <!-- Section Observations -->
+            <div class="section">
+                <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Observations de la garde :</label>
+                        <textarea id="observations" placeholder="Remarques générales, incidents, points d'attention..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Consignes pour la relève :</label>
+                        <textarea id="consignes" placeholder="Informations importantes à transmettre à la prochaine garde..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-success" onclick="window.print()">🖨️ Imprimer la feuille de garde</button>
+                <button class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Système de sauvegarde automatique
+        const STORAGE_KEY = 'sdis47_feuille_garde';
+        
+        // Sauvegarder les données
+        function saveData() {
+            const data = {
+                date: document.getElementById('gardeDate').value,
+                agentsVerificateurs: [],
+                vsav: [],
+                vsr: [],
+                fpt: [],
+                uccf: [],
+                vl: [],
+                evenements: [],
+                observations: document.getElementById('observations').value,
+                consignes: document.getElementById('consignes').value,
+                lastUpdate: new Date().toISOString()
+            };
+            
+            // Sauvegarder les agents vérificateurs
+            const agentRows = document.getElementById('agentVerificateurBody').rows;
+            for (let row of agentRows) {
+                data.agentsVerificateurs.push({
+                    agent: row.cells[0].textContent,
+                    vehicule: row.cells[1].textContent
+                });
+            }
+            
+            // Sauvegarder les VSAV
+            const vsavRows = document.getElementById('vsavBody').rows;
+            for (let row of vsavRows) {
+                data.vsav.push({
+                    engin: row.cells[0].textContent,
+                    carburant: row.cells[1].textContent,
+                    adblue: row.cells[2].textContent,
+                    gyrophare: row.cells[3].textContent,
+                    eclairage: row.cells[4].textContent,
+                    o2Sac: row.cells[5].textContent,
+                    o2Cell1: row.cells[6].textContent,
+                    o2Cell2: row.cells[7].textContent,
+                    o2Cell15L: row.cells[8].textContent,
+                    detecteurCO: row.cells[9].textContent,
+                    multiparam: row.cells[10].textContent,
+                    aspirateur: row.cells[11].textContent,
+                    thermo: row.cells[12].textContent,
+                    glycemie: row.cells[13].textContent,
+                    agent: row.cells[14].textContent
+                });
+            }
+            
+            // Sauvegarder les autres engins (VSR, FPT, UCCF, VL)
+            ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
+                const rows = document.getElementById(category + 'Body').rows;
+                for (let row of rows) {
+                    data[category].push({
+                        engin: row.cells[0].textContent,
+                        observations: row.cells[1].querySelector('input').value
+                    });
+                }
+            });
+            
+            // Sauvegarder les événements
+            const eventRows = document.getElementById('evenementsBody').rows;
+            for (let row of eventRows) {
+                data.evenements.push({
+                    heure: row.cells[0].querySelector('input').value,
+                    type: row.cells[1].querySelector('select').value,
+                    description: row.cells[2].querySelector('input').value
+                });
+            }
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            
+            // Sauvegarder aussi dans Firebase si configuré
+            if (isFirebaseConfigured) {
+                saveToFirebase(data);
+            }
+        }
+        
+        // Charger les données
+        async function loadData() {
+            const currentDate = document.getElementById('gardeDate').value;
+            
+            // Essayer de charger depuis Firebase d'abord
+            if (isFirebaseConfigured) {
+                const firebaseData = await loadFromFirebase(currentDate);
+                if (firebaseData) {
+                    console.log('📥 Données chargées depuis Firebase');
+                    restoreData(firebaseData);
+                    return;
+                }
+            }
+            
+            // Sinon charger depuis localStorage
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (!savedData) return;
+            
+            try {
+                const data = JSON.parse(savedData);
+                restoreData(data);
+            } catch (e) {
+                console.error('Erreur lors du chargement des données:', e);
+            }
+        }
+        
+        // Fonction pour restaurer les données dans l'interface
+        function restoreData(data) {
+            try {
+                
+                // Restaurer la date
+                if (data.date) {
+                    document.getElementById('gardeDate').value = data.date;
+                    updateAgendisLinks();
+                }
+                
+                // Restaurer les agents vérificateurs
+                const agentBody = document.getElementById('agentVerificateurBody');
+                agentBody.innerHTML = '';
+                data.agentsVerificateurs.forEach(item => {
+                    const newRow = agentBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${item.agent}</td>
+                        <td>${item.vehicule}</td>
+                        <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+                    `;
+                });
+                
+                // Restaurer les VSAV
+                const vsavBody = document.getElementById('vsavBody');
+                vsavBody.innerHTML = '';
+                data.vsav.forEach(item => {
+                    const newRow = vsavBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${item.engin}</td>
+                        <td>${item.carburant}</td>
+                        <td>${item.adblue}</td>
+                        <td>${item.gyrophare}</td>
+                        <td>${item.eclairage}</td>
+                        <td>${item.o2Sac}</td>
+                        <td>${item.o2Cell1}</td>
+                        <td>${item.o2Cell2}</td>
+                        <td>${item.o2Cell15L}</td>
+                        <td>${item.detecteurCO}</td>
+                        <td>${item.multiparam}</td>
+                        <td>${item.aspirateur}</td>
+                        <td>${item.thermo}</td>
+                        <td>${item.glycemie}</td>
+                        <td>${item.agent}</td>
+                    `;
+                });
+                
+                // Restaurer les autres engins
+                ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
+                    const tbody = document.getElementById(category + 'Body');
+                    tbody.innerHTML = '';
+                    if (data[category]) {
+                        data[category].forEach(item => {
+                            const newRow = tbody.insertRow();
+                            newRow.innerHTML = `
+                                <td><strong>${item.engin}</strong></td>
+                                <td><input type="text" placeholder="Remarques" value="${item.observations}" onchange="saveData()"></td>
+                            `;
+                        });
+                    }
+                });
+                
+                // Restaurer les événements
+                const eventBody = document.getElementById('evenementsBody');
+                eventBody.innerHTML = '';
+                data.evenements.forEach(item => {
+                    const newRow = eventBody.insertRow();
+                    newRow.innerHTML = `
+                        <td><input type="time" value="${item.heure}" onchange="saveData()"></td>
+                        <td>
+                            <select onchange="saveData()">
+                                <option value="info" ${item.type === 'info' ? 'selected' : ''}>ℹ️ Information</option>
+                                <option value="intervention" ${item.type === 'intervention' ? 'selected' : ''}>🚨 Intervention</option>
+                                <option value="exercice" ${item.type === 'exercice' ? 'selected' : ''}>🎯 Exercice</option>
+                                <option value="technique" ${item.type === 'technique' ? 'selected' : ''}>🔧 Technique</option>
+                            </select>
+                        </td>
+                        <td><input type="text" placeholder="Description de l'événement" value="${item.description}" onchange="saveData()"></td>
+                        <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+                    `;
+                });
+                
+                // Restaurer les observations
+                if (data.observations) document.getElementById('observations').value = data.observations;
+                if (data.consignes) document.getElementById('consignes').value = data.consignes;
+                
+            } catch (e) {
+                console.error('Erreur lors de la restauration des données:', e);
+            }
+        }
+        
+        // Initialisation de la date
+        function initDate() {
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('fr-FR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('currentDate').textContent = dateStr;
+            
+            const inputDate = today.toISOString().split('T')[0];
+            document.getElementById('gardeDate').value = inputDate;
+            
+            updateAgendisLinks();
+            loadData();
+        }
+
+        // Mise à jour des liens Agendis
+        function updateAgendisLinks() {
+            saveData();
+            const dateInput = document.getElementById('gardeDate').value;
+            if (!dateInput) return;
+            
+            const date = new Date(dateInput + 'T12:00:00');
+            const tomorrow = new Date(date);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
+            
+            const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
+            document.getElementById('agendisToday').href = baseUrl + formatDate(date);
+            document.getElementById('agendisTomorrow').href = baseUrl + formatDate(tomorrow);
+        }
+
+        // Ajout d'un engin
+        function addEngin(category) {
+            const selectId = category + 'Select';
+            const select = document.getElementById(selectId);
+            const enginName = select.value;
+            
+            if (!enginName) {
+                alert('Veuillez sélectionner un engin');
+                return;
+            }
+            
+            // Ouvrir la fenêtre popup
+            openEnginPopup(enginName, category);
+            
+            // Réinitialiser le select
+            select.value = '';
+        }
+
+        // Ouvrir la popup pour saisir les informations de l'engin
+        function openEnginPopup(enginName, category) {
+            // Créer l'overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'popupOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            // Créer la popup
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                max-width: 500px;
+                width: 90%;
+            `;
+            
+            // Contenu spécifique pour VSAV
+            const vsavContent = category === 'vsav' ? `
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Pression O2 bouteille 5L du sac (bars) :
+                    </label>
+                    <input type="number" id="popupO2Sac" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Pression O2 bouteille 5L de la cellule 1 (bars) :
+                    </label>
+                    <input type="number" id="popupO2Cellule1" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Pression O2 bouteille 5L de la cellule 2 (bars) :
+                    </label>
+                    <input type="number" id="popupO2Cellule2" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Pression O2 bouteille 15L de la cellule (bars) :
+                    </label>
+                    <input type="number" id="popupO2Cellule15L" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Détecteur CO :
+                    </label>
+                    <select id="popupDetecteurCO" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="present">✅ Présent</option>
+                        <option value="absent">❌ Absent</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Multiparamètres :
+                    </label>
+                    <select id="popupMultiparametres" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Aspirateur de mucosité :
+                    </label>
+                    <select id="popupAspirateur" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Thermomètre :
+                    </label>
+                    <select id="popupThermometre" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Lecteur de glycémie :
+                    </label>
+                    <select id="popupGlycemie" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
+                    </select>
+                </div>
+            ` : '';
+            
+            popup.innerHTML = `
+                <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
+                    Vérification journalière - ${enginName}
+                </h2>
+                <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Niveau de carburant (%) :
+                        </label>
+                        <input type="number" id="popupCarburant" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Niveau d'AdBlue (%) :
+                        </label>
+                        <input type="number" id="popupAdBlue" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Gyrophare :
+                        </label>
+                        <select id="popupGyrophare" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                            <option value="ok">✅ OK</option>
+                            <option value="nok">❌ NON OK</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Éclairage :
+                        </label>
+                        <select id="popupEclairage" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                            <option value="ok">✅ OK</option>
+                            <option value="nok">❌ NON OK</option>
+                        </select>
+                    </div>
+                    ${vsavContent}
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Observations :
+                        </label>
+                        <textarea id="popupObservations" placeholder="Remarques complémentaires..." style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Nom de l'agent :
+                        </label>
+                        <input type="text" id="popupAgent" placeholder="Nom et prénom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
+                    <button class="btn btn-secondary" onclick="closeEnginPopup()">Annuler</button>
+                    <button class="btn btn-primary" onclick="saveEnginFromPopup('${enginName}', '${category}')">Ajouter</button>
+                </div>
+            `;
+            
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+        }
+
+        // Sauvegarder l'engin depuis la popup
+        function saveEnginFromPopup(enginName, category) {
+            const carburant = document.getElementById('popupCarburant').value;
+            const adblue = document.getElementById('popupAdBlue').value;
+            const gyrophare = document.getElementById('popupGyrophare').value;
+            const eclairage = document.getElementById('popupEclairage').value;
+            const observationsSupp = document.getElementById('popupObservations').value;
+            const agent = document.getElementById('popupAgent').value;
+            
+            // Construire les observations à partir des données
+            let observations = [];
+            if (carburant) observations.push(`Carburant: ${carburant}%`);
+            if (adblue) observations.push(`AdBlue: ${adblue}%`);
+            observations.push(`Gyro: ${gyrophare === 'ok' ? 'OK' : 'NON OK'}`);
+            observations.push(`Éclairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
+            
+            if (observationsSupp) observations.push(`Obs: ${observationsSupp}`);
+            
+            // Données spécifiques VSAV
+            if (category === 'vsav') {
+                const o2Sac = document.getElementById('popupO2Sac').value;
+                const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
+                const o2Cellule2 = document.getElementById('popupO2Cellule2').value;
+                const o2Cellule15L = document.getElementById('popupO2Cellule15L').value;
+                const detecteurCO = document.getElementById('popupDetecteurCO').value;
+                const multiparametres = document.getElementById('popupMultiparametres').value;
+                const aspirateur = document.getElementById('popupAspirateur').value;
+                const thermometre = document.getElementById('popupThermometre').value;
+                const glycemie = document.getElementById('popupGlycemie').value;
+                
+                if (o2Sac) observations.push(`O2 Sac 5L: ${o2Sac} bars`);
+                if (o2Cellule1) observations.push(`O2 Cell.1 5L: ${o2Cellule1} bars`);
+                if (o2Cellule2) observations.push(`O2 Cell.2 5L: ${o2Cellule2} bars`);
+                if (o2Cellule15L) observations.push(`O2 Cell. 15L: ${o2Cellule15L} bars`);
+                observations.push(`Détect.CO: ${detecteurCO === 'present' ? 'Présent' : 'Absent'}`);
+                observations.push(`Multiparam: ${multiparametres === 'ok' ? 'OK' : 'NON OK'}`);
+                observations.push(`Aspirateur: ${aspirateur === 'ok' ? 'OK' : 'NON OK'}`);
+                observations.push(`Thermo: ${thermometre === 'ok' ? 'OK' : 'NON OK'}`);
+                observations.push(`Glycémie: ${glycemie === 'ok' ? 'OK' : 'NON OK'}`);
+            }
+            
+            if (agent) observations.push(`Agent: ${agent}`);
+            
+            const tbodyId = category + 'Body';
+            const tbody = document.getElementById(tbodyId);
+            const newRow = tbody.insertRow();
+            
+            if (category === 'vsav') {
+                const o2Sac = document.getElementById('popupO2Sac').value;
+                const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
+                const o2Cellule2 = document.getElementById('popupO2Cellule2').value;
+                const o2Cellule15L = document.getElementById('popupO2Cellule15L').value;
+                const detecteurCO = document.getElementById('popupDetecteurCO').value;
+                const multiparametres = document.getElementById('popupMultiparametres').value;
+                const aspirateur = document.getElementById('popupAspirateur').value;
+                const thermometre = document.getElementById('popupThermometre').value;
+                const glycemie = document.getElementById('popupGlycemie').value;
+                
+                newRow.innerHTML = `
+                    <td><strong>${enginName}</strong></td>
+                    <td>${carburant ? carburant + '%' : '-'}</td>
+                    <td>${adblue ? adblue + '%' : '-'}</td>
+                    <td>${gyrophare === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${eclairage === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${o2Sac ? o2Sac + ' bars' : '-'}</td>
+                    <td>${o2Cellule1 ? o2Cellule1 + ' bars' : '-'}</td>
+                    <td>${o2Cellule2 ? o2Cellule2 + ' bars' : '-'}</td>
+                    <td>${o2Cellule15L ? o2Cellule15L + ' bars' : '-'}</td>
+                    <td>${detecteurCO === 'present' ? '✅ Présent' : '❌ Absent'}</td>
+                    <td>${multiparametres === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${aspirateur === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${thermometre === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${glycemie === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${agent || '-'}</td>
+                `;
+            } else {
+                newRow.innerHTML = `
+                    <td><strong>${enginName}</strong></td>
+                    <td><input type="text" placeholder="Remarques" value="${observations.join(' | ')}"></td>
+                `;
+            }
+            
+            saveData();
+            closeEnginPopup();
+        }
+
+        // Fermer la popup
+        function closeEnginPopup() {
+            const overlay = document.getElementById('popupOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Ouvrir la popup agent vérificateur
+        function openAgentVerificateurPopup() {
+            const overlay = document.createElement('div');
+            overlay.id = 'popupOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                max-width: 500px;
+                width: 90%;
+            `;
+            
+            popup.innerHTML = `
+                <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
+                    Ajouter un agent vérificateur
+                </h2>
+                <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Véhicule :
+                        </label>
+                        <select id="popupVehicule" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                            <option value="">-- Sélectionner un véhicule --</option>
+                            <option value="VSAV 29">VSAV 29</option>
+                            <option value="VSAV 49">VSAV 49</option>
+                            <option value="VSRL 93">VSRL 93</option>
+                            <option value="FPT 85">FPT 85</option>
+                            <option value="UCCFM 74">UCCFM 74</option>
+                            <option value="UCCFM 75">UCCFM 75</option>
+                            <option value="UCCFS 98">UCCFS 98</option>
+                            <option value="UCCFS 99">UCCFS 99</option>
+                            <option value="VLRTT 38">VLRTT 38</option>
+                            <option value="VLRTT 45">VLRTT 45</option>
+                            <option value="VLRTT 76">VLRTT 76</option>
+                            <option value="VLU 39">VLU 39</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                            Agent (Prénom et Nom) :
+                        </label>
+                        <input type="text" id="popupAgentVerif" placeholder="Prénom et nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
+                    <button class="btn btn-secondary" onclick="closeAgentVerificateurPopup()">Annuler</button>
+                    <button class="btn btn-primary" onclick="saveAgentVerificateur()">Ajouter</button>
+                </div>
+            `;
+            
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+        }
+
+        // Fermer la popup agent vérificateur
+        function closeAgentVerificateurPopup() {
+            const overlay = document.getElementById('popupOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Sauvegarder l'agent vérificateur
+        function saveAgentVerificateur() {
+            const vehicule = document.getElementById('popupVehicule').value;
+            const agent = document.getElementById('popupAgentVerif').value;
+            
+            if (!vehicule || !agent) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            const tbody = document.getElementById('agentVerificateurBody');
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `
+                <td>${agent}</td>
+                <td>${vehicule}</td>
+                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+            `;
+            
+            saveData();
+            closeAgentVerificateurPopup();
+        }
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCY1ns4SPRqZ2qtRHhekSp9UsAH17h9is",
+            authDomain: "sdis47-garde.firebaseapp.com",
+            databaseURL: "https://sdis47-garde-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "sdis47-garde",
+            storageBucket: "sdis47-garde.firebasestorage.app",
+            messagingSenderId: "36803710300",
+            appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
+        };
+
+        // Initialiser Firebase (sera fait après configuration)
+        let db = null;
+        let isFirebaseConfigured = true;
+
+        // Vérifier si Firebase est configuré
+        function checkFirebaseConfig() {
+            return firebaseConfig.apiKey !== "VOTRE_API_KEY";
+        }
+
+        // Sauvegarder dans Firebase
+        function saveToFirebase(data) {
+            if (!window.isFirebaseConfigured || !window.db) {
+                console.log('Firebase non configuré, sauvegarde locale uniquement');
+                return;
+            }
+            
+            const dateKey = data.date.replace(/-/g, '_');
+            const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
+            window.dbSet(dataRef, data)
+                .then(() => {
+                    console.log('✅ Données sauvegardées dans Firebase');
+                })
+                .catch((error) => {
+                    console.error('❌ Erreur Firebase:', error);
+                    alert('Erreur lors de la sauvegarde en ligne. Données sauvegardées localement.');
+                });
+        }
+
+        // Charger depuis Firebase
+        function loadFromFirebase(date) {
+            if (!window.isFirebaseConfigured || !window.db) {
+                return Promise.resolve(null);
+            }
+            
+            const dateKey = date.replace(/-/g, '_');
+            const dbRef = window.dbRef(window.db);
+            return window.dbGet(window.dbChild(dbRef, 'feuilles_garde/' + dateKey))
+                .then((snapshot) => {
+                    return snapshot.val();
+                })
+                .catch((error) => {
+                    console.error('❌ Erreur chargement Firebase:', error);
+                    return null;
+                });
+        }
+
+        // Ajout d'un événement
+        function addEvenement() {
+            const tbody = document.getElementById('evenementsBody');
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `
+                <td><input type="time" onchange="saveData()"></td>
+                <td>
+                    <select onchange="saveData()">
+                        <option value="info">ℹ️ Information</option>
+                        <option value="intervention">🚨 Intervention</option>
+                        <option value="exercice">🎯 Exercice</option>
+                        <option value="technique">🔧 Technique</option>
+                    </select>
+                </td>
+                <td><input type="text" placeholder="Description de l'événement" onchange="saveData()"></td>
+                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+            `;
+            saveData();
+        }
+
+        // Suppression d'une ligne
+        function removeRow(button) {
+            const row = button.parentElement.parentElement;
+            const tbody = row.parentElement;
+            row.remove();
+            
+            // Renuméroter les effectifs si nécessaire
+            if (tbody.id === 'effectifsBody') {
+                const rows = tbody.rows;
+                for (let i = 0; i < rows.length; i++) {
+                    rows[i].cells[0].textContent = i + 1;
+                }
+                updateEffectifCount();
+            }
+        }
+
+        // Mise à jour du statut visuel d'une ligne d'engin
+        function updateRowStatus(select) {
+            const row = select.parentElement.parentElement;
+            row.className = '';
+            
+            if (select.value === 'ok') {
+                row.classList.add('status-ok');
+            } else if (select.value === 'alert') {
+                row.classList.add('status-alert');
+            } else if (select.value === 'error') {
+                row.classList.add('status-error');
+            }
+        }
+
+        // Réinitialisation du formulaire
+        function resetForm() {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser la feuille de garde ?')) {
+                location.reload();
+            }
+        }
+
+        // Initialisation au chargement
+        window.onload = function() {
+            // Vérifier si Firebase est configuré
+            isFirebaseConfigured = checkFirebaseConfig();
+            
+            if (isFirebaseConfigured) {
+                console.log('✅ Firebase configuré, chargement du SDK...');
+            } else {
+                console.log('⚠️ Firebase non configuré. Instructions dans la console.');
+                console.log('%c📋 GUIDE DE CONFIGURATION FIREBASE', 'color: #E31E24; font-size: 16px; font-weight: bold;');
+                console.log('%c1. Créez un projet gratuit sur https://console.firebase.google.com', 'color: #21808D; font-size: 14px;');
+                console.log('%c2. Activez "Realtime Database" dans votre projet', 'color: #21808D; font-size: 14px;');
+                console.log('%c3. Copiez votre configuration Firebase', 'color: #21808D; font-size: 14px;');
+                console.log('%c4. Remplacez les valeurs dans firebaseConfig au début du script', 'color: #21808D; font-size: 14px;');
+                console.log('%c5. Rechargez la page', 'color: #21808D; font-size: 14px;');
+                console.log('%c\n💡 En attendant, l\'application fonctionne en mode local', 'color: #626C71; font-size: 13px;');
+            }
+            
+            initDate();
+        };
+    </script>
+    
+    <!-- Firebase SDK v9+ (modular) -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+        
+        // Initialiser Firebase après chargement des SDK
+        if (isFirebaseConfigured) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                window.db = getDatabase(app);
+                window.dbRef = ref;
+                window.dbSet = set;
+                window.dbGet = get;
+                window.dbChild = child;
+                console.log('✅ Firebase initialisé avec succès');
+            } catch (error) {
+                console.error('❌ Erreur initialisation Firebase:', error);
+                window.isFirebaseConfigured = false;
+            }
+        }
+    </script>
+</body>
+</html>
