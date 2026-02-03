@@ -743,10 +743,16 @@
                 month: 'long', 
                 day: 'numeric' 
             });
-            document.getElementById('currentDate').textContent = dateStr;
+            const currentDateElement = document.getElementById('currentDate');
+            if (currentDateElement) {
+                currentDateElement.textContent = dateStr;
+            }
             
             const inputDate = today.toISOString().split('T')[0];
-            document.getElementById('gardeDate').value = inputDate;
+            const gardeDateElement = document.getElementById('gardeDate');
+            if (gardeDateElement) {
+                gardeDateElement.value = inputDate;
+            }
             
             updateAgendisLinks();
             loadData();
@@ -754,19 +760,19 @@
 
         // Mise à jour des liens Agendis
         function updateAgendisLinks() {
-            saveData();
             const dateInput = document.getElementById('gardeDate').value;
             if (!dateInput) return;
             
             const date = new Date(dateInput + 'T12:00:00');
-            const tomorrow = new Date(date);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
             const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
             
             const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
-            document.getElementById('agendisToday').href = baseUrl + formatDate(date);
-            document.getElementById('agendisTomorrow').href = baseUrl + formatDate(tomorrow);
+            const agendisLink = document.getElementById('agendisToday');
+            if (agendisLink) {
+                agendisLink.href = baseUrl + formatDate(date);
+            }
+            
+            saveData();
         }
 
         // Ajout d'un engin
