@@ -754,7 +754,10 @@
                 gardeDateElement.value = inputDate;
             }
             
+            // Mise à jour des liens Agendis sans sauvegarder
             updateAgendisLinks();
+            
+            // Charger les données existantes
             loadData();
         }
 
@@ -771,8 +774,6 @@
             if (agendisLink) {
                 agendisLink.href = baseUrl + formatDate(date);
             }
-            
-            saveData();
         }
 
         // Ajout d'un engin
@@ -1169,8 +1170,7 @@
 
         // Sauvegarder dans Firebase
         function saveToFirebase(data) {
-            if (!window.isFirebaseConfigured || !window.db) {
-                console.log('Firebase non configuré, sauvegarde locale uniquement');
+            if (!window.db) {
                 return;
             }
             
