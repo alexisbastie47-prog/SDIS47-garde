@@ -250,8 +250,6 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 2px solid var(--color-border);
-        }
-
             box-sizing: border-box;
         }
 
@@ -283,7 +281,7 @@
                 <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/b5dda112-aea7-413a-ac2c-cb7abd85e198" alt="SDIS47">
             </div>
             <div class="header-info">
-                <h1>FEUILLE DE GARDE JOURNALIÃˆRE</h1>
+                <h1>FEUILLE DE GARDE JOURNALIÈRE</h1>
                 <div class="date" id="currentDate"></div>
             </div>
         </div>
@@ -291,35 +289,35 @@
         <div class="info-bar">
             <label>
                 Date de garde :
-                <input type="date" id="gardeDate" onchange="updateAgendisLinks()">
+                <input type="date" id="gardeDate" onchange="onDateChange()">
             </label>
         </div>
 
         <div class="content">
             <!-- Section Effectifs -->
             <div class="section">
-                <div class="section-title">ðŸ‘¥ EFFECTIFS DE GARDE</div>
+                <div class="section-title">👥 EFFECTIFS DE GARDE</div>
                 <div style="margin-bottom: 15px;">
                     <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
                         Consultez le planning des effectifs sur Agendis :
                     </p>
                     <a href="#" id="agendisToday" target="_blank" style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s;">
-                        ðŸ“… Planning Agendis du jour
+                        📅 Planning Agendis du jour
                     </a>
                 </div>
             </div>
 
-            <!-- Section Agent vÃ©rificateur -->
+            <!-- Section Agent vérificateur -->
             <div class="section">
-                <div class="section-title">âœ… AGENT VÃ‰RIFICATEUR</div>
+                <div class="section-title">✅ AGENT VÉRIFICATEUR</div>
                 <div style="margin-bottom: 15px;">
-                    <button class="btn btn-primary" onclick="openAgentVerificateurPopup()">âž• Ajouter un agent pour une vÃ©rification</button>
+                    <button class="btn btn-primary" onclick="openAgentVerificateurPopup()">➕ Ajouter un agent pour une vérification</button>
                 </div>
                 <table id="agentVerificateurTable">
                     <thead>
                         <tr>
                             <th>Agent</th>
-                            <th>VÃ©hicule</th>
+                            <th>Véhicule</th>
                             <th style="width: 80px;">Action</th>
                         </tr>
                     </thead>
@@ -330,21 +328,21 @@
 
             <!-- Section Engins -->
             <div class="section">
-                <div class="section-title">ðŸš’ Ã‰TAT DES ENGINS</div>
-                
+                <div class="section-title">🚒 ÉTAT DES ENGINS</div>
+
                 <!-- Sous-section VSAV -->
                 <div style="margin-bottom: 30px;">
                     <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSAV</h3>
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            SÃ©lectionner un VSAV Ã  ajouter :
+                            Sélectionner un VSAV à ajouter :
                         </label>
                         <select id="vsavSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
                             <option value="">-- Choisir un VSAV --</option>
                             <option value="VSAV 29">VSAV 29</option>
                             <option value="VSAV 49">VSAV 49</option>
                         </select>
-                        <button class="btn btn-primary" onclick="addEngin('vsav')">âž• Ajouter l'engin</button>
+                        <button class="btn btn-primary" onclick="addEngin('vsav')">➕ Ajouter l'engin</button>
                     </div>
                     <div style="overflow-x: auto;">
                         <table style="min-width: 1400px;">
@@ -354,16 +352,16 @@
                                     <th style="min-width: 70px;">Carburant</th>
                                     <th style="min-width: 70px;">AdBlue</th>
                                     <th style="min-width: 80px;">Gyrophare</th>
-                                    <th style="min-width: 80px;">Ã‰clairage</th>
+                                    <th style="min-width: 80px;">Éclairage</th>
                                     <th style="min-width: 80px;">O2 Sac 5L</th>
                                     <th style="min-width: 80px;">O2 Cell1 5L</th>
                                     <th style="min-width: 80px;">O2 Cell2 5L</th>
                                     <th style="min-width: 80px;">O2 Cell 15L</th>
-                                    <th style="min-width: 90px;">DÃ©tect. CO</th>
+                                    <th style="min-width: 90px;">Détect. CO</th>
                                     <th style="min-width: 100px;">Multiparam.</th>
                                     <th style="min-width: 90px;">Aspirateur</th>
                                     <th style="min-width: 90px;">Thermo.</th>
-                                    <th style="min-width: 90px;">GlycÃ©mie</th>
+                                    <th style="min-width: 90px;">Glycémie</th>
                                     <th style="min-width: 120px;">Agent</th>
                                 </tr>
                             </thead>
@@ -378,13 +376,13 @@
                     <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSR</h3>
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            SÃ©lectionner un VSR Ã  ajouter :
+                            Sélectionner un VSR à ajouter :
                         </label>
                         <select id="vsrSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
                             <option value="">-- Choisir un VSR --</option>
                             <option value="VSRL 93">VSRL 93</option>
                         </select>
-                        <button class="btn btn-primary" onclick="addEngin('vsr')">âž• Ajouter l'engin</button>
+                        <button class="btn btn-primary" onclick="addEngin('vsr')">➕ Ajouter l'engin</button>
                     </div>
                     <table>
                         <thead>
@@ -404,13 +402,13 @@
                     <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">FPT</h3>
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            SÃ©lectionner un FPT Ã  ajouter :
+                            Sélectionner un FPT à ajouter :
                         </label>
                         <select id="fptSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
                             <option value="">-- Choisir un FPT --</option>
                             <option value="FPT 85">FPT 85</option>
                         </select>
-                        <button class="btn btn-primary" onclick="addEngin('fpt')">âž• Ajouter l'engin</button>
+                        <button class="btn btn-primary" onclick="addEngin('fpt')">➕ Ajouter l'engin</button>
                     </div>
                     <table>
                         <thead>
@@ -430,7 +428,7 @@
                     <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">UCCF</h3>
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            SÃ©lectionner un UCCF Ã  ajouter :
+                            Sélectionner un UCCF à ajouter :
                         </label>
                         <select id="uccfSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
                             <option value="">-- Choisir un UCCF --</option>
@@ -439,7 +437,7 @@
                             <option value="UCCFS 98">UCCFS 98</option>
                             <option value="UCCFS 99">UCCFS 99</option>
                         </select>
-                        <button class="btn btn-primary" onclick="addEngin('uccf')">âž• Ajouter l'engin</button>
+                        <button class="btn btn-primary" onclick="addEngin('uccf')">➕ Ajouter l'engin</button>
                     </div>
                     <table>
                         <thead>
@@ -459,7 +457,7 @@
                     <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VL</h3>
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            SÃ©lectionner un VL Ã  ajouter :
+                            Sélectionner un VL à ajouter :
                         </label>
                         <select id="vlSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
                             <option value="">-- Choisir un VL --</option>
@@ -468,7 +466,7 @@
                             <option value="VLRTT 76">VLRTT 76</option>
                             <option value="VLU 39">VLU 39</option>
                         </select>
-                        <button class="btn btn-primary" onclick="addEngin('vl')">âž• Ajouter l'engin</button>
+                        <button class="btn btn-primary" onclick="addEngin('vl')">➕ Ajouter l'engin</button>
                     </div>
                     <table>
                         <thead>
@@ -484,15 +482,15 @@
                 </div>
             </div>
 
-            <!-- Section Ã‰vÃ©nements -->
+            <!-- Section Événements -->
             <div class="section">
-                <div class="section-title">ðŸ“‹ JOURNAL DES Ã‰VÃ‰NEMENTS</div>
+                <div class="section-title">📋 JOURNAL DES ÉVÉNEMENTS</div>
                 <table id="evenementsTable">
                     <thead>
                         <tr>
                             <th style="width: 80px;">Heure</th>
                             <th style="width: 150px;">Type</th>
-                            <th>Ã‰vÃ©nement / Intervention</th>
+                            <th>Événement / Intervention</th>
                             <th style="width: 80px;">Action</th>
                         </tr>
                     </thead>
@@ -501,55 +499,61 @@
                             <td><input type="time"></td>
                             <td>
                                 <select>
-                                    <option value="info">â„¹ï¸ Information</option>
-                                    <option value="intervention">ðŸš¨ Intervention</option>
-                                    <option value="exercice">ðŸŽ¯ Exercice</option>
-                                    <option value="technique">ðŸ”§ Technique</option>
+                                    <option value="info">ℹ️ Information</option>
+                                    <option value="intervention">🚨 Intervention</option>
+                                    <option value="exercice">🎯 Exercice</option>
+                                    <option value="technique">🔧 Technique</option>
                                 </select>
                             </td>
-                            <td><input type="text" placeholder="Description de l'Ã©vÃ©nement"></td>
-                            <td><button class="btn btn-secondary" onclick="removeRow(this)">âŒ</button></td>
+                            <td><input type="text" placeholder="Description de l'événement"></td>
+                            <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-primary" onclick="addEvenement()">âž• Ajouter un Ã©vÃ©nement</button>
+                <button class="btn btn-primary" onclick="addEvenement()">➕ Ajouter un événement</button>
             </div>
 
             <!-- Section Observations -->
             <div class="section">
-                <div class="section-title">ðŸ“ OBSERVATIONS ET CONSIGNES</div>
+                <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
                 <div class="grid">
                     <div class="form-group">
                         <label>Observations de la garde :</label>
-                        <textarea id="observations" placeholder="Remarques gÃ©nÃ©rales, incidents, points d'attention..."></textarea>
+                        <textarea id="observations" placeholder="Remarques générales, incidents, points d'attention..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Consignes pour la relÃ¨ve :</label>
-                        <textarea id="consignes" placeholder="Informations importantes Ã  transmettre Ã  la prochaine garde..."></textarea>
+                        <label>Consignes pour la relève :</label>
+                        <textarea id="consignes" placeholder="Informations importantes à transmettre à la prochaine garde..."></textarea>
                     </div>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="actions">
-                <button class="btn btn-success" onclick="window.print()">ðŸ–¨ï¸ Imprimer la feuille de garde</button>
-                <button class="btn btn-secondary" onclick="resetForm()">ðŸ”„ RÃ©initialiser</button>
+                <button class="btn btn-success" onclick="window.print()">🖨️ Imprimer la feuille de garde</button>
+                <button class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
             </div>
         </div>
     </div>
 
     <script>
-        // SystÃ¨me de sauvegarde automatique
+        // Système de sauvegarde automatique
         const STORAGE_KEY = 'sdis47_feuille_garde';
-        
-        // Sauvegarder les donnÃ©es
+
+        // Obtenir la clé de stockage pour la date sélectionnée
+        function getStorageKey() {
+            const gardeDateElement = document.getElementById('gardeDate');
+            if (!gardeDateElement || !gardeDateElement.value) return STORAGE_KEY;
+            return `${STORAGE_KEY}_${gardeDateElement.value}`;
+        }
+
+        // Sauvegarder les données
         function saveData() {
             const gardeDateElement = document.getElementById('gardeDate');
             if (!gardeDateElement || !gardeDateElement.value) return;
-            
+
             const currentDate = gardeDateElement.value;
-            const storageKey = `${STORAGE_KEY}_${currentDate}`;
-            
+
             const data = {
                 date: currentDate,
                 agentsVerificateurs: [],
@@ -563,8 +567,8 @@
                 consignes: document.getElementById('consignes').value,
                 lastUpdate: new Date().toISOString()
             };
-            
-            // Sauvegarder les agents vÃ©rificateurs
+
+            // Sauvegarder les agents vérificateurs
             const agentRows = document.getElementById('agentVerificateurBody').rows;
             for (let row of agentRows) {
                 data.agentsVerificateurs.push({
@@ -572,7 +576,7 @@
                     vehicule: row.cells[1].textContent
                 });
             }
-            
+
             // Sauvegarder les VSAV
             const vsavRows = document.getElementById('vsavBody').rows;
             for (let row of vsavRows) {
@@ -594,19 +598,19 @@
                     agent: row.cells[14].textContent
                 });
             }
-            
+
             // Sauvegarder les autres engins (VSR, FPT, UCCF, VL)
             ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
                 const rows = document.getElementById(category + 'Body').rows;
                 for (let row of rows) {
                     data[category].push({
                         engin: row.cells[0].textContent,
-                        observations: row.cells[1].querySelector('input').value
+                        observations: row.cells[1].querySelector('input') ? row.cells[1].querySelector('input').value : ''
                     });
                 }
             });
-            
-            // Sauvegarder les Ã©vÃ©nements
+
+            // Sauvegarder les événements
             const eventRows = document.getElementById('evenementsBody').rows;
             for (let row of eventRows) {
                 data.evenements.push({
@@ -615,16 +619,16 @@
                     description: row.cells[2].querySelector('input').value
                 });
             }
-            
-            localStorage.setItem(storageKey, JSON.stringify(data));
-            console.log('ðŸ’¾ DonnÃ©es sauvegardÃ©es localement pour le ' + currentDate);
-            
-            // Sauvegarder aussi dans Firebase si configurÃ©
+
+            localStorage.setItem(getStorageKey(), JSON.stringify(data));
+            console.log('💾 Données sauvegardées localement pour le ' + currentDate);
+
+            // Sauvegarder aussi dans Firebase si configuré
             if (isFirebaseConfigured) {
                 saveToFirebase(data);
             }
         }
-        
+
         // Fonction pour vider le formulaire
         function clearForm() {
             document.getElementById('agentVerificateurBody').innerHTML = '';
@@ -638,101 +642,102 @@
                     <td><input type="time"></td>
                     <td>
                         <select>
-                            <option value="info">â„¹ï¸ Information</option>
-                            <option value="intervention">ðŸš¨ Intervention</option>
-                            <option value="exercice">ðŸŽ¯ Exercice</option>
-                            <option value="technique">ðŸ”§ Technique</option>
+                            <option value="info">ℹ️ Information</option>
+                            <option value="intervention">🚨 Intervention</option>
+                            <option value="exercice">🎯 Exercice</option>
+                            <option value="technique">🔧 Technique</option>
                         </select>
                     </td>
-                    <td><input type="text" placeholder="Description de l'Ã©vÃ©nement"></td>
-                    <td><button class="btn btn-secondary" onclick="removeRow(this)">âŒ</button></td>
+                    <td><input type="text" placeholder="Description de l'événement"></td>
+                    <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
                 </tr>
             `;
             document.getElementById('observations').value = '';
             document.getElementById('consignes').value = '';
         }
-        
-        // Charger les donnÃ©es
+
+        // Charger les données pour la date sélectionnée
         async function loadData() {
             const gardeDateElement = document.getElementById('gardeDate');
             if (!gardeDateElement || !gardeDateElement.value) return;
-            
+
             const currentDate = gardeDateElement.value;
-            const storageKey = `${STORAGE_KEY}_${currentDate}`;
-            
+
+            // CORRECTION 1 : Toujours vider le formulaire AVANT de charger
+            clearForm();
+
             // Essayer de charger depuis Firebase d'abord
             if (isFirebaseConfigured) {
                 const firebaseData = await loadFromFirebase(currentDate);
                 if (firebaseData) {
-                    console.log('ðŸ“¥ DonnÃ©es chargÃ©es depuis Firebase pour le ' + currentDate);
+                    console.log('📥 Données chargées depuis Firebase pour le ' + currentDate);
                     restoreData(firebaseData);
                     return;
                 }
             }
-            
-            // Sinon charger depuis localStorage pour cette date spÃ©cifique
-            const savedData = localStorage.getItem(storageKey);
+
+            // Sinon charger depuis localStorage pour cette date spécifique
+            const savedData = localStorage.getItem(getStorageKey());
             if (!savedData) {
-                // RÃ©initialiser le formulaire si aucune donnÃ©e n'existe pour cette date
-                clearForm();
+                console.log('📋 Aucune donnée pour le ' + currentDate);
                 return;
             }
-            
+
             try {
                 const data = JSON.parse(savedData);
-                console.log('ðŸ“¥ DonnÃ©es chargÃ©es localement pour le ' + currentDate);
+                console.log('📥 Données chargées localement pour le ' + currentDate);
                 restoreData(data);
             } catch (e) {
-                console.error('Erreur lors du chargement des donnÃ©es:', e);
+                console.error('Erreur lors du chargement des données:', e);
             }
         }
-        
-        // Fonction pour restaurer les donnÃ©es dans l'interface
+
+        // Fonction pour restaurer les données dans l'interface
         function restoreData(data) {
             try {
-                
-                // Restaurer la date
-                if (data.date) {
-                    document.getElementById('gardeDate').value = data.date;
-                    updateAgendisLinks();
-                }
-                
-                // Restaurer les agents vÃ©rificateurs
+                // CORRECTION 2 : NE PLUS appeler updateAgendisLinks() ici
+                // pour éviter la boucle infinie restoreData -> updateAgendisLinks -> loadData -> restoreData
+
+                // Restaurer les agents vérificateurs
                 const agentBody = document.getElementById('agentVerificateurBody');
                 agentBody.innerHTML = '';
-                data.agentsVerificateurs.forEach(item => {
-                    const newRow = agentBody.insertRow();
-                    newRow.innerHTML = `
-                        <td>${item.agent}</td>
-                        <td>${item.vehicule}</td>
-                        <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">âŒ</button></td>
-                    `;
-                });
-                
+                if (data.agentsVerificateurs) {
+                    data.agentsVerificateurs.forEach(item => {
+                        const newRow = agentBody.insertRow();
+                        newRow.innerHTML = `
+                            <td>${item.agent}</td>
+                            <td>${item.vehicule}</td>
+                            <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+                        `;
+                    });
+                }
+
                 // Restaurer les VSAV
                 const vsavBody = document.getElementById('vsavBody');
                 vsavBody.innerHTML = '';
-                data.vsav.forEach(item => {
-                    const newRow = vsavBody.insertRow();
-                    newRow.innerHTML = `
-                        <td>${item.engin}</td>
-                        <td>${item.carburant}</td>
-                        <td>${item.adblue}</td>
-                        <td>${item.gyrophare}</td>
-                        <td>${item.eclairage}</td>
-                        <td>${item.o2Sac}</td>
-                        <td>${item.o2Cell1}</td>
-                        <td>${item.o2Cell2}</td>
-                        <td>${item.o2Cell15L}</td>
-                        <td>${item.detecteurCO}</td>
-                        <td>${item.multiparam}</td>
-                        <td>${item.aspirateur}</td>
-                        <td>${item.thermo}</td>
-                        <td>${item.glycemie}</td>
-                        <td>${item.agent}</td>
-                    `;
-                });
-                
+                if (data.vsav) {
+                    data.vsav.forEach(item => {
+                        const newRow = vsavBody.insertRow();
+                        newRow.innerHTML = `
+                            <td>${item.engin}</td>
+                            <td>${item.carburant}</td>
+                            <td>${item.adblue}</td>
+                            <td>${item.gyrophare}</td>
+                            <td>${item.eclairage}</td>
+                            <td>${item.o2Sac}</td>
+                            <td>${item.o2Cell1}</td>
+                            <td>${item.o2Cell2}</td>
+                            <td>${item.o2Cell15L}</td>
+                            <td>${item.detecteurCO}</td>
+                            <td>${item.multiparam}</td>
+                            <td>${item.aspirateur}</td>
+                            <td>${item.thermo}</td>
+                            <td>${item.glycemie}</td>
+                            <td>${item.agent}</td>
+                        `;
+                    });
+                }
+
                 // Restaurer les autres engins
                 ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
                     const tbody = document.getElementById(category + 'Body');
@@ -742,60 +747,77 @@
                             const newRow = tbody.insertRow();
                             newRow.innerHTML = `
                                 <td><strong>${item.engin}</strong></td>
-                                <td><input type="text" placeholder="Remarques" value="${item.observations}" onchange="saveData()"></td>
+                                <td><input type="text" placeholder="Remarques" value="${item.observations || ''}" onchange="saveData()"></td>
                             `;
                         });
                     }
                 });
-                
-                // Restaurer les Ã©vÃ©nements
+
+                // Restaurer les événements
                 const eventBody = document.getElementById('evenementsBody');
                 eventBody.innerHTML = '';
-                data.evenements.forEach(item => {
+                if (data.evenements && data.evenements.length > 0) {
+                    data.evenements.forEach(item => {
+                        const newRow = eventBody.insertRow();
+                        newRow.innerHTML = `
+                            <td><input type="time" value="${item.heure}" onchange="saveData()"></td>
+                            <td>
+                                <select onchange="saveData()">
+                                    <option value="info" ${item.type === 'info' ? 'selected' : ''}>ℹ️ Information</option>
+                                    <option value="intervention" ${item.type === 'intervention' ? 'selected' : ''}>🚨 Intervention</option>
+                                    <option value="exercice" ${item.type === 'exercice' ? 'selected' : ''}>🎯 Exercice</option>
+                                    <option value="technique" ${item.type === 'technique' ? 'selected' : ''}>🔧 Technique</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Description de l'événement" value="${item.description}" onchange="saveData()"></td>
+                            <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+                        `;
+                    });
+                } else {
                     const newRow = eventBody.insertRow();
                     newRow.innerHTML = `
-                        <td><input type="time" value="${item.heure}" onchange="saveData()"></td>
+                        <td><input type="time"></td>
                         <td>
-                            <select onchange="saveData()">
-                                <option value="info" ${item.type === 'info' ? 'selected' : ''}>â„¹ï¸ Information</option>
-                                <option value="intervention" ${item.type === 'intervention' ? 'selected' : ''}>ðŸš¨ Intervention</option>
-                                <option value="exercice" ${item.type === 'exercice' ? 'selected' : ''}>ðŸŽ¯ Exercice</option>
-                                <option value="technique" ${item.type === 'technique' ? 'selected' : ''}>ðŸ”§ Technique</option>
+                            <select>
+                                <option value="info">ℹ️ Information</option>
+                                <option value="intervention">🚨 Intervention</option>
+                                <option value="exercice">🎯 Exercice</option>
+                                <option value="technique">🔧 Technique</option>
                             </select>
                         </td>
-                        <td><input type="text" placeholder="Description de l'Ã©vÃ©nement" value="${item.description}" onchange="saveData()"></td>
-                        <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">âŒ</button></td>
+                        <td><input type="text" placeholder="Description de l'événement"></td>
+                        <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
                     `;
-                });
-                
+                }
+
                 // Restaurer les observations
-                if (data.observations) document.getElementById('observations').value = data.observations;
-                if (data.consignes) document.getElementById('consignes').value = data.consignes;
-                
+                document.getElementById('observations').value = data.observations || '';
+                document.getElementById('consignes').value = data.consignes || '';
+
             } catch (e) {
-                console.error('Erreur lors de la restauration des donnÃ©es:', e);
+                console.error('Erreur lors de la restauration des données:', e);
             }
         }
-        
+
         // Initialisation de la date
         function initDate() {
             const today = new Date();
             updateDateDisplay(today);
-            
+
             const inputDate = today.toISOString().split('T')[0];
             const gardeDateElement = document.getElementById('gardeDate');
             if (gardeDateElement) {
                 gardeDateElement.value = inputDate;
             }
-            
-            // Mise Ã  jour des liens Agendis sans sauvegarder
-            updateAgendisLinks();
-            
-            // Charger les donnÃ©es existantes
+
+            // Mise à jour du lien Agendis sans déclencher loadData
+            updateAgendisLinkOnly();
+
+            // Charger les données existantes pour aujourd'hui
             loadData();
         }
 
-        // Mettre Ã  jour l'affichage de la date dans le titre
+        // Mettre à jour l'affichage de la date dans le titre
         function updateDateDisplay(date) {
             const dateStr = date.toLocaleDateString('fr-FR', { 
                 weekday: 'long', 
@@ -809,30 +831,39 @@
             }
         }
 
-        // Mise Ã  jour des liens Agendis et de la date affichÃ©e
-        function updateAgendisLinks() {
+        // Mise à jour du lien Agendis uniquement (sans charger les données)
+        function updateAgendisLinkOnly() {
             try {
                 const dateInput = document.getElementById('gardeDate');
                 if (!dateInput || !dateInput.value) return;
-                
+
                 const date = new Date(dateInput.value + 'T12:00:00');
-                
-                // Mettre Ã  jour l'affichage de la date dans le titre
-                updateDateDisplay(date);
-                
-                // Mettre Ã  jour le lien Agendis
                 const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
                 const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
                 const agendisLink = document.getElementById('agendisToday');
                 if (agendisLink) {
                     agendisLink.href = baseUrl + formatDate(date);
                 }
-                
-                // Charger les donnÃ©es pour la date sÃ©lectionnÃ©e
-                loadData();
             } catch (error) {
-                console.error('Erreur mise Ã  jour liens Agendis:', error);
+                console.error('Erreur mise à jour lien Agendis:', error);
             }
+        }
+
+        // Fonction appelée au changement de date (onchange du calendrier)
+        function onDateChange() {
+            const dateInput = document.getElementById('gardeDate');
+            if (!dateInput || !dateInput.value) return;
+
+            const date = new Date(dateInput.value + 'T12:00:00');
+
+            // 1. Mettre à jour l'affichage de la date dans le titre
+            updateDateDisplay(date);
+
+            // 2. Mettre à jour le lien Agendis
+            updateAgendisLinkOnly();
+
+            // 3. Charger les données de la nouvelle date (clearForm est appelé dans loadData)
+            loadData();
         }
 
         // Ajout d'un engin
@@ -840,22 +871,21 @@
             const selectId = category + 'Select';
             const select = document.getElementById(selectId);
             const enginName = select.value;
-            
+
             if (!enginName) {
-                alert('Veuillez sÃ©lectionner un engin');
+                alert('Veuillez sélectionner un engin');
                 return;
             }
-            
-            // Ouvrir la fenÃªtre popup
+
+            // Ouvrir la fenêtre popup
             openEnginPopup(enginName, category);
-            
-            // RÃ©initialiser le select
+
+            // Réinitialiser le select
             select.value = '';
         }
 
         // Ouvrir la popup pour saisir les informations de l'engin
         function openEnginPopup(enginName, category) {
-            // CrÃ©er l'overlay
             const overlay = document.createElement('div');
             overlay.id = 'popupOverlay';
             overlay.style.cssText = `
@@ -870,8 +900,7 @@
                 align-items: center;
                 z-index: 1000;
             `;
-            
-            // CrÃ©er la popup
+
             const popup = document.createElement('div');
             popup.style.cssText = `
                 background: white;
@@ -881,8 +910,7 @@
                 max-width: 500px;
                 width: 90%;
             `;
-            
-            // Contenu spÃ©cifique pour VSAV
+
             const vsavContent = category === 'vsav' ? `
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
@@ -910,54 +938,54 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        DÃ©tecteur CO :
+                        Détecteur CO :
                     </label>
                     <select id="popupDetecteurCO" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="present">âœ… PrÃ©sent</option>
-                        <option value="absent">âŒ Absent</option>
+                        <option value="present">✅ Présent</option>
+                        <option value="absent">❌ Absent</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        MultiparamÃ¨tres :
+                        Multiparamètres :
                     </label>
                     <select id="popupMultiparametres" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">âœ… OK</option>
-                        <option value="nok">âŒ NON OK</option>
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Aspirateur de mucositÃ© :
+                        Aspirateur de mucosité :
                     </label>
                     <select id="popupAspirateur" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">âœ… OK</option>
-                        <option value="nok">âŒ NON OK</option>
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        ThermomÃ¨tre :
+                        Thermomètre :
                     </label>
                     <select id="popupThermometre" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">âœ… OK</option>
-                        <option value="nok">âŒ NON OK</option>
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Lecteur de glycÃ©mie :
+                        Lecteur de glycémie :
                     </label>
                     <select id="popupGlycemie" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">âœ… OK</option>
-                        <option value="nok">âŒ NON OK</option>
+                        <option value="ok">✅ OK</option>
+                        <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
             ` : '';
-            
+
             popup.innerHTML = `
                 <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
-                    VÃ©rification journaliÃ¨re - ${enginName}
+                    Vérification journalière - ${enginName}
                 </h2>
                 <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
                     <div style="margin-bottom: 15px;">
@@ -977,17 +1005,17 @@
                             Gyrophare :
                         </label>
                         <select id="popupGyrophare" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="ok">âœ… OK</option>
-                            <option value="nok">âŒ NON OK</option>
+                            <option value="ok">✅ OK</option>
+                            <option value="nok">❌ NON OK</option>
                         </select>
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Ã‰clairage :
+                            Éclairage :
                         </label>
                         <select id="popupEclairage" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="ok">âœ… OK</option>
-                            <option value="nok">âŒ NON OK</option>
+                            <option value="ok">✅ OK</option>
+                            <option value="nok">❌ NON OK</option>
                         </select>
                     </div>
                     ${vsavContent}
@@ -995,13 +1023,13 @@
                         <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
                             Observations :
                         </label>
-                        <textarea id="popupObservations" placeholder="Remarques complÃ©mentaires..." style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
+                        <textarea id="popupObservations" placeholder="Remarques complémentaires..." style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
                     </div>
                     <div style="margin-bottom: 20px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
                             Nom de l'agent :
                         </label>
-                        <input type="text" id="popupAgent" placeholder="Nom et prÃ©nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <input type="text" id="popupAgent" placeholder="Nom et prénom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                     </div>
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
@@ -1009,7 +1037,7 @@
                     <button class="btn btn-primary" onclick="saveEnginFromPopup('${enginName}', '${category}')">Ajouter</button>
                 </div>
             `;
-            
+
             overlay.appendChild(popup);
             document.body.appendChild(overlay);
         }
@@ -1022,17 +1050,15 @@
             const eclairage = document.getElementById('popupEclairage').value;
             const observationsSupp = document.getElementById('popupObservations').value;
             const agent = document.getElementById('popupAgent').value;
-            
-            // Construire les observations Ã  partir des donnÃ©es
+
             let observations = [];
             if (carburant) observations.push(`Carburant: ${carburant}%`);
             if (adblue) observations.push(`AdBlue: ${adblue}%`);
             observations.push(`Gyro: ${gyrophare === 'ok' ? 'OK' : 'NON OK'}`);
-            observations.push(`Ã‰clairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
-            
+            observations.push(`Éclairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
+
             if (observationsSupp) observations.push(`Obs: ${observationsSupp}`);
-            
-            // DonnÃ©es spÃ©cifiques VSAV
+
             if (category === 'vsav') {
                 const o2Sac = document.getElementById('popupO2Sac').value;
                 const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
@@ -1043,24 +1069,24 @@
                 const aspirateur = document.getElementById('popupAspirateur').value;
                 const thermometre = document.getElementById('popupThermometre').value;
                 const glycemie = document.getElementById('popupGlycemie').value;
-                
+
                 if (o2Sac) observations.push(`O2 Sac 5L: ${o2Sac} bars`);
                 if (o2Cellule1) observations.push(`O2 Cell.1 5L: ${o2Cellule1} bars`);
                 if (o2Cellule2) observations.push(`O2 Cell.2 5L: ${o2Cellule2} bars`);
                 if (o2Cellule15L) observations.push(`O2 Cell. 15L: ${o2Cellule15L} bars`);
-                observations.push(`DÃ©tect.CO: ${detecteurCO === 'present' ? 'PrÃ©sent' : 'Absent'}`);
+                observations.push(`Détect.CO: ${detecteurCO === 'present' ? 'Présent' : 'Absent'}`);
                 observations.push(`Multiparam: ${multiparametres === 'ok' ? 'OK' : 'NON OK'}`);
                 observations.push(`Aspirateur: ${aspirateur === 'ok' ? 'OK' : 'NON OK'}`);
                 observations.push(`Thermo: ${thermometre === 'ok' ? 'OK' : 'NON OK'}`);
-                observations.push(`GlycÃ©mie: ${glycemie === 'ok' ? 'OK' : 'NON OK'}`);
+                observations.push(`Glycémie: ${glycemie === 'ok' ? 'OK' : 'NON OK'}`);
             }
-            
+
             if (agent) observations.push(`Agent: ${agent}`);
-            
+
             const tbodyId = category + 'Body';
             const tbody = document.getElementById(tbodyId);
             const newRow = tbody.insertRow();
-            
+
             if (category === 'vsav') {
                 const o2Sac = document.getElementById('popupO2Sac').value;
                 const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
@@ -1071,31 +1097,31 @@
                 const aspirateur = document.getElementById('popupAspirateur').value;
                 const thermometre = document.getElementById('popupThermometre').value;
                 const glycemie = document.getElementById('popupGlycemie').value;
-                
+
                 newRow.innerHTML = `
                     <td><strong>${enginName}</strong></td>
                     <td>${carburant ? carburant + '%' : '-'}</td>
                     <td>${adblue ? adblue + '%' : '-'}</td>
-                    <td>${gyrophare === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
-                    <td>${eclairage === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
+                    <td>${gyrophare === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${eclairage === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
                     <td>${o2Sac ? o2Sac + ' bars' : '-'}</td>
                     <td>${o2Cellule1 ? o2Cellule1 + ' bars' : '-'}</td>
                     <td>${o2Cellule2 ? o2Cellule2 + ' bars' : '-'}</td>
                     <td>${o2Cellule15L ? o2Cellule15L + ' bars' : '-'}</td>
-                    <td>${detecteurCO === 'present' ? 'âœ… PrÃ©sent' : 'âŒ Absent'}</td>
-                    <td>${multiparametres === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
-                    <td>${aspirateur === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
-                    <td>${thermometre === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
-                    <td>${glycemie === 'ok' ? 'âœ… OK' : 'âŒ NON OK'}</td>
+                    <td>${detecteurCO === 'present' ? '✅ Présent' : '❌ Absent'}</td>
+                    <td>${multiparametres === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${aspirateur === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${thermometre === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                    <td>${glycemie === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
                     <td>${agent || '-'}</td>
                 `;
             } else {
                 newRow.innerHTML = `
                     <td><strong>${enginName}</strong></td>
-                    <td><input type="text" placeholder="Remarques" value="${observations.join(' | ')}"></td>
+                    <td><input type="text" placeholder="Remarques" value="${observations.join(' | ')}" onchange="saveData()"></td>
                 `;
             }
-            
+
             saveData();
             closeEnginPopup();
         }
@@ -1108,7 +1134,7 @@
             }
         }
 
-        // Ouvrir la popup agent vÃ©rificateur
+        // Ouvrir la popup agent vérificateur
         function openAgentVerificateurPopup() {
             const overlay = document.createElement('div');
             overlay.id = 'popupOverlay';
@@ -1124,7 +1150,7 @@
                 align-items: center;
                 z-index: 1000;
             `;
-            
+
             const popup = document.createElement('div');
             popup.style.cssText = `
                 background: white;
@@ -1134,18 +1160,18 @@
                 max-width: 500px;
                 width: 90%;
             `;
-            
+
             popup.innerHTML = `
                 <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
-                    Ajouter un agent vÃ©rificateur
+                    Ajouter un agent vérificateur
                 </h2>
                 <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            VÃ©hicule :
+                            Véhicule :
                         </label>
                         <select id="popupVehicule" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="">-- SÃ©lectionner un vÃ©hicule --</option>
+                            <option value="">-- Sélectionner un véhicule --</option>
                             <option value="VSAV 29">VSAV 29</option>
                             <option value="VSAV 49">VSAV 49</option>
                             <option value="VSRL 93">VSRL 93</option>
@@ -1162,9 +1188,9 @@
                     </div>
                     <div style="margin-bottom: 20px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Agent (PrÃ©nom et Nom) :
+                            Agent (Prénom et Nom) :
                         </label>
-                        <input type="text" id="popupAgentVerif" placeholder="PrÃ©nom et nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <input type="text" id="popupAgentVerif" placeholder="Prénom et nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                     </div>
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
@@ -1172,12 +1198,12 @@
                     <button class="btn btn-primary" onclick="saveAgentVerificateur()">Ajouter</button>
                 </div>
             `;
-            
+
             overlay.appendChild(popup);
             document.body.appendChild(overlay);
         }
 
-        // Fermer la popup agent vÃ©rificateur
+        // Fermer la popup agent vérificateur
         function closeAgentVerificateurPopup() {
             const overlay = document.getElementById('popupOverlay');
             if (overlay) {
@@ -1185,24 +1211,24 @@
             }
         }
 
-        // Sauvegarder l'agent vÃ©rificateur
+        // Sauvegarder l'agent vérificateur
         function saveAgentVerificateur() {
             const vehicule = document.getElementById('popupVehicule').value;
             const agent = document.getElementById('popupAgentVerif').value;
-            
+
             if (!vehicule || !agent) {
                 alert('Veuillez remplir tous les champs');
                 return;
             }
-            
+
             const tbody = document.getElementById('agentVerificateurBody');
             const newRow = tbody.insertRow();
             newRow.innerHTML = `
                 <td>${agent}</td>
                 <td>${vehicule}</td>
-                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">âŒ</button></td>
+                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
             `;
-            
+
             saveData();
             closeAgentVerificateurPopup();
         }
@@ -1218,11 +1244,11 @@
             appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
         };
 
-        // Initialiser Firebase (sera fait aprÃ¨s configuration)
+        // Initialiser Firebase
         let db = null;
         let isFirebaseConfigured = true;
 
-        // VÃ©rifier si Firebase est configurÃ©
+        // Vérifier si Firebase est configuré
         function checkFirebaseConfig() {
             return firebaseConfig.apiKey !== "VOTRE_API_KEY";
         }
@@ -1232,16 +1258,16 @@
             if (!window.db) {
                 return;
             }
-            
+
             const dateKey = data.date.replace(/-/g, '_');
             const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
             window.dbSet(dataRef, data)
                 .then(() => {
-                    console.log('âœ… DonnÃ©es sauvegardÃ©es dans Firebase');
+                    console.log('✅ Données sauvegardées dans Firebase');
                 })
                 .catch((error) => {
-                    console.error('âŒ Erreur Firebase:', error);
-                    alert('Erreur lors de la sauvegarde en ligne. DonnÃ©es sauvegardÃ©es localement.');
+                    console.error('❌ Erreur Firebase:', error);
+                    alert('Erreur lors de la sauvegarde en ligne. Données sauvegardées localement.');
                 });
         }
 
@@ -1250,20 +1276,20 @@
             if (!window.isFirebaseConfigured || !window.db) {
                 return Promise.resolve(null);
             }
-            
+
             const dateKey = date.replace(/-/g, '_');
-            const dbRef = window.dbRef(window.db);
-            return window.dbGet(window.dbChild(dbRef, 'feuilles_garde/' + dateKey))
+            const dbRefRoot = window.dbRef(window.db);
+            return window.dbGet(window.dbChild(dbRefRoot, 'feuilles_garde/' + dateKey))
                 .then((snapshot) => {
                     return snapshot.val();
                 })
                 .catch((error) => {
-                    console.error('âŒ Erreur chargement Firebase:', error);
+                    console.error('❌ Erreur chargement Firebase:', error);
                     return null;
                 });
         }
 
-        // Ajout d'un Ã©vÃ©nement
+        // Ajout d'un événement
         function addEvenement() {
             const tbody = document.getElementById('evenementsBody');
             const newRow = tbody.insertRow();
@@ -1271,14 +1297,14 @@
                 <td><input type="time" onchange="saveData()"></td>
                 <td>
                     <select onchange="saveData()">
-                        <option value="info">â„¹ï¸ Information</option>
-                        <option value="intervention">ðŸš¨ Intervention</option>
-                        <option value="exercice">ðŸŽ¯ Exercice</option>
-                        <option value="technique">ðŸ”§ Technique</option>
+                        <option value="info">ℹ️ Information</option>
+                        <option value="intervention">🚨 Intervention</option>
+                        <option value="exercice">🎯 Exercice</option>
+                        <option value="technique">🔧 Technique</option>
                     </select>
                 </td>
-                <td><input type="text" placeholder="Description de l'Ã©vÃ©nement" onchange="saveData()"></td>
-                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">âŒ</button></td>
+                <td><input type="text" placeholder="Description de l'événement" onchange="saveData()"></td>
+                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
             `;
             saveData();
         }
@@ -1288,22 +1314,20 @@
             const row = button.parentElement.parentElement;
             const tbody = row.parentElement;
             row.remove();
-            
-            // RenumÃ©roter les effectifs si nÃ©cessaire
+
             if (tbody.id === 'effectifsBody') {
                 const rows = tbody.rows;
                 for (let i = 0; i < rows.length; i++) {
                     rows[i].cells[0].textContent = i + 1;
                 }
-                updateEffectifCount();
             }
         }
 
-        // Mise Ã  jour du statut visuel d'une ligne d'engin
+        // Mise à jour du statut visuel d'une ligne d'engin
         function updateRowStatus(select) {
             const row = select.parentElement.parentElement;
             row.className = '';
-            
+
             if (select.value === 'ok') {
                 row.classList.add('status-ok');
             } else if (select.value === 'alert') {
@@ -1313,41 +1337,42 @@
             }
         }
 
-        // RÃ©initialisation du formulaire
+        // CORRECTION 3 : Réinitialisation du formulaire (supprime les données de la date courante)
         function resetForm() {
-            if (confirm('ÃŠtes-vous sÃ»r de vouloir rÃ©initialiser la feuille de garde ?')) {
-                location.reload();
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser la feuille de garde pour cette date ?')) {
+                localStorage.removeItem(getStorageKey());
+
+                // Supprimer aussi dans Firebase si configuré
+                if (isFirebaseConfigured && window.db) {
+                    const currentDate = document.getElementById('gardeDate').value;
+                    const dateKey = currentDate.replace(/-/g, '_');
+                    const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
+                    window.dbSet(dataRef, null).catch(e => console.error('Erreur suppression Firebase:', e));
+                }
+
+                clearForm();
             }
         }
 
         // Initialisation au chargement
         window.onload = function() {
-            // VÃ©rifier si Firebase est configurÃ©
             isFirebaseConfigured = checkFirebaseConfig();
-            
+
             if (isFirebaseConfigured) {
-                console.log('âœ… Firebase configurÃ©, chargement du SDK...');
+                console.log('✅ Firebase configuré, chargement du SDK...');
             } else {
-                console.log('âš ï¸ Firebase non configurÃ©. Instructions dans la console.');
-                console.log('%cðŸ“‹ GUIDE DE CONFIGURATION FIREBASE', 'color: #E31E24; font-size: 16px; font-weight: bold;');
-                console.log('%c1. CrÃ©ez un projet gratuit sur https://console.firebase.google.com', 'color: #21808D; font-size: 14px;');
-                console.log('%c2. Activez "Realtime Database" dans votre projet', 'color: #21808D; font-size: 14px;');
-                console.log('%c3. Copiez votre configuration Firebase', 'color: #21808D; font-size: 14px;');
-                console.log('%c4. Remplacez les valeurs dans firebaseConfig au dÃ©but du script', 'color: #21808D; font-size: 14px;');
-                console.log('%c5. Rechargez la page', 'color: #21808D; font-size: 14px;');
-                console.log('%c\nðŸ’¡ En attendant, l\'application fonctionne en mode local', 'color: #626C71; font-size: 13px;');
+                console.log('⚠️ Firebase non configuré.');
             }
-            
+
             initDate();
         };
     </script>
-    
+
     <!-- Firebase SDK v9+ (modular) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
-        
-        // Initialiser Firebase aprÃ¨s chargement des SDK
+
         if (isFirebaseConfigured) {
             try {
                 const app = initializeApp(firebaseConfig);
@@ -1356,9 +1381,9 @@
                 window.dbSet = set;
                 window.dbGet = get;
                 window.dbChild = child;
-                console.log('âœ… Firebase initialisÃ© avec succÃ¨s');
+                console.log('✅ Firebase initialisé avec succès');
             } catch (error) {
-                console.error('âŒ Erreur initialisation Firebase:', error);
+                console.error('❌ Erreur initialisation Firebase:', error);
                 window.isFirebaseConfigured = false;
             }
         }
