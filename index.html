@@ -482,37 +482,6 @@
                 </div>
             </div>
 
-            <!-- Section Événements -->
-            <div class="section">
-                <div class="section-title">📋 JOURNAL DES ÉVÉNEMENTS</div>
-                <table id="evenementsTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 80px;">Heure</th>
-                            <th style="width: 150px;">Type</th>
-                            <th>Événement / Intervention</th>
-                            <th style="width: 80px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="evenementsBody">
-                        <tr>
-                            <td><input type="time"></td>
-                            <td>
-                                <select>
-                                    <option value="info">ℹ️ Information</option>
-                                    <option value="intervention">🚨 Intervention</option>
-                                    <option value="exercice">🎯 Exercice</option>
-                                    <option value="technique">🔧 Technique</option>
-                                </select>
-                            </td>
-                            <td><input type="text" placeholder="Description de l'événement"></td>
-                            <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn btn-primary" onclick="addEvenement()">➕ Ajouter un événement</button>
-            </div>
-
             <!-- Section Observations -->
             <div class="section">
                 <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
@@ -537,21 +506,17 @@
     </div>
 
     <script>
-        // Système de sauvegarde automatique
         const STORAGE_KEY = 'sdis47_feuille_garde';
 
-        // Obtenir la clé de stockage pour la date sélectionnée
         function getStorageKey() {
             const gardeDateElement = document.getElementById('gardeDate');
             if (!gardeDateElement || !gardeDateElement.value) return STORAGE_KEY;
             return `${STORAGE_KEY}_${gardeDateElement.value}`;
         }
 
-        // Sauvegarder les données
         function saveData() {
             const gardeDateElement = document.getElementById('gardeDate');
             if (!gardeDateElement || !gardeDateElement.value) return;
-
             const currentDate = gardeDateElement.value;
 
             const data = {
@@ -562,13 +527,11 @@
                 fpt: [],
                 uccf: [],
                 vl: [],
-                evenements: [],
                 observations: document.getElementById('observations').value,
                 consignes: document.getElementById('consignes').value,
                 lastUpdate: new Date().toISOString()
             };
 
-            // Sauvegarder les agents vérificateurs
             const agentRows = document.getElementById('agentVerificateurBody').rows;
             for (let row of agentRows) {
                 data.agentsVerificateurs.push({
@@ -577,7 +540,6 @@
                 });
             }
 
-            // Sauvegarder les VSAV
             const vsavRows = document.getElementById('vsavBody').rows;
             for (let row of vsavRows) {
                 data.vsav.push({
@@ -599,7 +561,6 @@
                 });
             }
 
-            // Sauvegarder les autres engins (VSR, FPT, UCCF, VL)
             ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
                 const rows = document.getElementById(category + 'Body').rows;
                 for (let row of rows) {
@@ -610,26 +571,14 @@
                 }
             });
 
-            // Sauvegarder les événements
-            const eventRows = document.getElementById('evenementsBody').rows;
-            for (let row of eventRows) {
-                data.evenements.push({
-                    heure: row.cells[0].querySelector('input').value,
-                    type: row.cells[1].querySelector('select').value,
-                    description: row.cells[2].querySelector('input').value
-                });
-            }
-
             localStorage.setItem(getStorageKey(), JSON.stringify(data));
             console.log('💾 Données sauvegardées localement pour le ' + currentDate);
 
-            // Sauvegarder aussi dans Firebase si configuré
             if (isFirebaseConfigured) {
                 saveToFirebase(data);
             }
         }
 
-        // Fonction pour vider le formulaire
         function clearForm() {
             document.getElementById('agentVerificateurBody').innerHTML = '';
             document.getElementById('vsavBody').innerHTML = '';
@@ -637,36 +586,17 @@
             document.getElementById('fptBody').innerHTML = '';
             document.getElementById('uccfBody').innerHTML = '';
             document.getElementById('vlBody').innerHTML = '';
-            document.getElementById('evenementsBody').innerHTML = `
-                <tr>
-                    <td><input type="time"></td>
-                    <td>
-                        <select>
-                            <option value="info">ℹ️ Information</option>
-                            <option value="intervention">🚨 Intervention</option>
-                            <option value="exercice">🎯 Exercice</option>
-                            <option value="technique">🔧 Technique</option>
-                        </select>
-                    </td>
-                    <td><input type="text" placeholder="Description de l'événement"></td>
-                    <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
-                </tr>
-            `;
             document.getElementById('observations').value = '';
             document.getElementById('consignes').value = '';
         }
 
-        // Charger les données pour la date sélectionnée
         async function loadData() {
             const gardeDateElement = document.getElementById('gardeDate');
             if (!gardeDateElement || !gardeDateElement.value) return;
-
             const currentDate = gardeDateElement.value;
 
-            // CORRECTION 1 : Toujours vider le formulaire AVANT de charger
             clearForm();
 
-            // Essayer de charger depuis Firebase d'abord
             if (isFirebaseConfigured) {
                 const firebaseData = await loadFromFirebase(currentDate);
                 if (firebaseData) {
@@ -676,7 +606,6 @@
                 }
             }
 
-            // Sinon charger depuis localStorage pour cette date spécifique
             const savedData = localStorage.getItem(getStorageKey());
             if (!savedData) {
                 console.log('📋 Aucune donnée pour le ' + currentDate);
@@ -692,13 +621,8 @@
             }
         }
 
-        // Fonction pour restaurer les données dans l'interface
         function restoreData(data) {
             try {
-                // CORRECTION 2 : NE PLUS appeler updateAgendisLinks() ici
-                // pour éviter la boucle infinie restoreData -> updateAgendisLinks -> loadData -> restoreData
-
-                // Restaurer les agents vérificateurs
                 const agentBody = document.getElementById('agentVerificateurBody');
                 agentBody.innerHTML = '';
                 if (data.agentsVerificateurs) {
@@ -712,7 +636,6 @@
                     });
                 }
 
-                // Restaurer les VSAV
                 const vsavBody = document.getElementById('vsavBody');
                 vsavBody.innerHTML = '';
                 if (data.vsav) {
@@ -738,7 +661,6 @@
                     });
                 }
 
-                // Restaurer les autres engins
                 ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
                     const tbody = document.getElementById(category + 'Body');
                     tbody.innerHTML = '';
@@ -753,77 +675,31 @@
                     }
                 });
 
-                // Restaurer les événements
-                const eventBody = document.getElementById('evenementsBody');
-                eventBody.innerHTML = '';
-                if (data.evenements && data.evenements.length > 0) {
-                    data.evenements.forEach(item => {
-                        const newRow = eventBody.insertRow();
-                        newRow.innerHTML = `
-                            <td><input type="time" value="${item.heure}" onchange="saveData()"></td>
-                            <td>
-                                <select onchange="saveData()">
-                                    <option value="info" ${item.type === 'info' ? 'selected' : ''}>ℹ️ Information</option>
-                                    <option value="intervention" ${item.type === 'intervention' ? 'selected' : ''}>🚨 Intervention</option>
-                                    <option value="exercice" ${item.type === 'exercice' ? 'selected' : ''}>🎯 Exercice</option>
-                                    <option value="technique" ${item.type === 'technique' ? 'selected' : ''}>🔧 Technique</option>
-                                </select>
-                            </td>
-                            <td><input type="text" placeholder="Description de l'événement" value="${item.description}" onchange="saveData()"></td>
-                            <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
-                        `;
-                    });
-                } else {
-                    const newRow = eventBody.insertRow();
-                    newRow.innerHTML = `
-                        <td><input type="time"></td>
-                        <td>
-                            <select>
-                                <option value="info">ℹ️ Information</option>
-                                <option value="intervention">🚨 Intervention</option>
-                                <option value="exercice">🎯 Exercice</option>
-                                <option value="technique">🔧 Technique</option>
-                            </select>
-                        </td>
-                        <td><input type="text" placeholder="Description de l'événement"></td>
-                        <td><button class="btn btn-secondary" onclick="removeRow(this)">❌</button></td>
-                    `;
-                }
-
-                // Restaurer les observations
                 document.getElementById('observations').value = data.observations || '';
                 document.getElementById('consignes').value = data.consignes || '';
-
             } catch (e) {
                 console.error('Erreur lors de la restauration des données:', e);
             }
         }
 
-        // Initialisation de la date
         function initDate() {
             const today = new Date();
             updateDateDisplay(today);
-
             const inputDate = today.toISOString().split('T')[0];
             const gardeDateElement = document.getElementById('gardeDate');
             if (gardeDateElement) {
                 gardeDateElement.value = inputDate;
             }
-
-            // Mise à jour du lien Agendis sans déclencher loadData
             updateAgendisLinkOnly();
-
-            // Charger les données existantes pour aujourd'hui
             loadData();
         }
 
-        // Mettre à jour l'affichage de la date dans le titre
         function updateDateDisplay(date) {
-            const dateStr = date.toLocaleDateString('fr-FR', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            const dateStr = date.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
             const currentDateElement = document.getElementById('currentDate');
             if (currentDateElement) {
@@ -831,12 +707,10 @@
             }
         }
 
-        // Mise à jour du lien Agendis uniquement (sans charger les données)
         function updateAgendisLinkOnly() {
             try {
                 const dateInput = document.getElementById('gardeDate');
                 if (!dateInput || !dateInput.value) return;
-
                 const date = new Date(dateInput.value + 'T12:00:00');
                 const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
                 const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
@@ -849,42 +723,27 @@
             }
         }
 
-        // Fonction appelée au changement de date (onchange du calendrier)
         function onDateChange() {
             const dateInput = document.getElementById('gardeDate');
             if (!dateInput || !dateInput.value) return;
-
             const date = new Date(dateInput.value + 'T12:00:00');
-
-            // 1. Mettre à jour l'affichage de la date dans le titre
             updateDateDisplay(date);
-
-            // 2. Mettre à jour le lien Agendis
             updateAgendisLinkOnly();
-
-            // 3. Charger les données de la nouvelle date (clearForm est appelé dans loadData)
             loadData();
         }
 
-        // Ajout d'un engin
         function addEngin(category) {
             const selectId = category + 'Select';
             const select = document.getElementById(selectId);
             const enginName = select.value;
-
             if (!enginName) {
                 alert('Veuillez sélectionner un engin');
                 return;
             }
-
-            // Ouvrir la fenêtre popup
             openEnginPopup(enginName, category);
-
-            // Réinitialiser le select
             select.value = '';
         }
 
-        // Ouvrir la popup pour saisir les informations de l'engin
         function openEnginPopup(enginName, category) {
             const overlay = document.createElement('div');
             overlay.id = 'popupOverlay';
@@ -1042,7 +901,6 @@
             document.body.appendChild(overlay);
         }
 
-        // Sauvegarder l'engin depuis la popup
         function saveEnginFromPopup(enginName, category) {
             const carburant = document.getElementById('popupCarburant').value;
             const adblue = document.getElementById('popupAdBlue').value;
@@ -1056,32 +914,7 @@
             if (adblue) observations.push(`AdBlue: ${adblue}%`);
             observations.push(`Gyro: ${gyrophare === 'ok' ? 'OK' : 'NON OK'}`);
             observations.push(`Éclairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
-
             if (observationsSupp) observations.push(`Obs: ${observationsSupp}`);
-
-            if (category === 'vsav') {
-                const o2Sac = document.getElementById('popupO2Sac').value;
-                const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
-                const o2Cellule2 = document.getElementById('popupO2Cellule2').value;
-                const o2Cellule15L = document.getElementById('popupO2Cellule15L').value;
-                const detecteurCO = document.getElementById('popupDetecteurCO').value;
-                const multiparametres = document.getElementById('popupMultiparametres').value;
-                const aspirateur = document.getElementById('popupAspirateur').value;
-                const thermometre = document.getElementById('popupThermometre').value;
-                const glycemie = document.getElementById('popupGlycemie').value;
-
-                if (o2Sac) observations.push(`O2 Sac 5L: ${o2Sac} bars`);
-                if (o2Cellule1) observations.push(`O2 Cell.1 5L: ${o2Cellule1} bars`);
-                if (o2Cellule2) observations.push(`O2 Cell.2 5L: ${o2Cellule2} bars`);
-                if (o2Cellule15L) observations.push(`O2 Cell. 15L: ${o2Cellule15L} bars`);
-                observations.push(`Détect.CO: ${detecteurCO === 'present' ? 'Présent' : 'Absent'}`);
-                observations.push(`Multiparam: ${multiparametres === 'ok' ? 'OK' : 'NON OK'}`);
-                observations.push(`Aspirateur: ${aspirateur === 'ok' ? 'OK' : 'NON OK'}`);
-                observations.push(`Thermo: ${thermometre === 'ok' ? 'OK' : 'NON OK'}`);
-                observations.push(`Glycémie: ${glycemie === 'ok' ? 'OK' : 'NON OK'}`);
-            }
-
-            if (agent) observations.push(`Agent: ${agent}`);
 
             const tbodyId = category + 'Body';
             const tbody = document.getElementById(tbodyId);
@@ -1126,15 +959,11 @@
             closeEnginPopup();
         }
 
-        // Fermer la popup
         function closeEnginPopup() {
             const overlay = document.getElementById('popupOverlay');
-            if (overlay) {
-                overlay.remove();
-            }
+            if (overlay) overlay.remove();
         }
 
-        // Ouvrir la popup agent vérificateur
         function openAgentVerificateurPopup() {
             const overlay = document.createElement('div');
             overlay.id = 'popupOverlay';
@@ -1203,24 +1032,18 @@
             document.body.appendChild(overlay);
         }
 
-        // Fermer la popup agent vérificateur
         function closeAgentVerificateurPopup() {
             const overlay = document.getElementById('popupOverlay');
-            if (overlay) {
-                overlay.remove();
-            }
+            if (overlay) overlay.remove();
         }
 
-        // Sauvegarder l'agent vérificateur
         function saveAgentVerificateur() {
             const vehicule = document.getElementById('popupVehicule').value;
             const agent = document.getElementById('popupAgentVerif').value;
-
             if (!vehicule || !agent) {
                 alert('Veuillez remplir tous les champs');
                 return;
             }
-
             const tbody = document.getElementById('agentVerificateurBody');
             const newRow = tbody.insertRow();
             newRow.innerHTML = `
@@ -1228,12 +1051,10 @@
                 <td>${vehicule}</td>
                 <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
             `;
-
             saveData();
             closeAgentVerificateurPopup();
         }
 
-        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBCY1ns4SPRqZ2qtRHhekSp9UsAH17h9is",
             authDomain: "sdis47-garde.firebaseapp.com",
@@ -1244,21 +1065,15 @@
             appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
         };
 
-        // Initialiser Firebase
         let db = null;
         let isFirebaseConfigured = true;
 
-        // Vérifier si Firebase est configuré
         function checkFirebaseConfig() {
             return firebaseConfig.apiKey !== "VOTRE_API_KEY";
         }
 
-        // Sauvegarder dans Firebase
         function saveToFirebase(data) {
-            if (!window.db) {
-                return;
-            }
-
+            if (!window.db) return;
             const dateKey = data.date.replace(/-/g, '_');
             const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
             window.dbSet(dataRef, data)
@@ -1271,50 +1086,24 @@
                 });
         }
 
-        // Charger depuis Firebase
         function loadFromFirebase(date) {
             if (!window.isFirebaseConfigured || !window.db) {
                 return Promise.resolve(null);
             }
-
             const dateKey = date.replace(/-/g, '_');
             const dbRefRoot = window.dbRef(window.db);
             return window.dbGet(window.dbChild(dbRefRoot, 'feuilles_garde/' + dateKey))
-                .then((snapshot) => {
-                    return snapshot.val();
-                })
+                .then((snapshot) => snapshot.val())
                 .catch((error) => {
                     console.error('❌ Erreur chargement Firebase:', error);
                     return null;
                 });
         }
 
-        // Ajout d'un événement
-        function addEvenement() {
-            const tbody = document.getElementById('evenementsBody');
-            const newRow = tbody.insertRow();
-            newRow.innerHTML = `
-                <td><input type="time" onchange="saveData()"></td>
-                <td>
-                    <select onchange="saveData()">
-                        <option value="info">ℹ️ Information</option>
-                        <option value="intervention">🚨 Intervention</option>
-                        <option value="exercice">🎯 Exercice</option>
-                        <option value="technique">🔧 Technique</option>
-                    </select>
-                </td>
-                <td><input type="text" placeholder="Description de l'événement" onchange="saveData()"></td>
-                <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
-            `;
-            saveData();
-        }
-
-        // Suppression d'une ligne
         function removeRow(button) {
             const row = button.parentElement.parentElement;
             const tbody = row.parentElement;
             row.remove();
-
             if (tbody.id === 'effectifsBody') {
                 const rows = tbody.rows;
                 for (let i = 0; i < rows.length; i++) {
@@ -1323,52 +1112,35 @@
             }
         }
 
-        // Mise à jour du statut visuel d'une ligne d'engin
         function updateRowStatus(select) {
             const row = select.parentElement.parentElement;
             row.className = '';
-
-            if (select.value === 'ok') {
-                row.classList.add('status-ok');
-            } else if (select.value === 'alert') {
-                row.classList.add('status-alert');
-            } else if (select.value === 'error') {
-                row.classList.add('status-error');
-            }
+            if (select.value === 'ok') row.classList.add('status-ok');
+            else if (select.value === 'alert') row.classList.add('status-alert');
+            else if (select.value === 'error') row.classList.add('status-error');
         }
 
-        // CORRECTION 3 : Réinitialisation du formulaire (supprime les données de la date courante)
         function resetForm() {
             if (confirm('Êtes-vous sûr de vouloir réinitialiser la feuille de garde pour cette date ?')) {
                 localStorage.removeItem(getStorageKey());
-
-                // Supprimer aussi dans Firebase si configuré
                 if (isFirebaseConfigured && window.db) {
                     const currentDate = document.getElementById('gardeDate').value;
                     const dateKey = currentDate.replace(/-/g, '_');
                     const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
                     window.dbSet(dataRef, null).catch(e => console.error('Erreur suppression Firebase:', e));
                 }
-
                 clearForm();
             }
         }
 
-        // Initialisation au chargement
         window.onload = function() {
             isFirebaseConfigured = checkFirebaseConfig();
-
-            if (isFirebaseConfigured) {
-                console.log('✅ Firebase configuré, chargement du SDK...');
-            } else {
-                console.log('⚠️ Firebase non configuré.');
-            }
-
+            if (isFirebaseConfigured) console.log('✅ Firebase configuré, chargement du SDK...');
+            else console.log('⚠️ Firebase non configuré.');
             initDate();
         };
     </script>
 
-    <!-- Firebase SDK v9+ (modular) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
