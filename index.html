@@ -82,7 +82,7 @@
         }
 
         .info-bar input[type="date"],
-        .info-bar input[type="text"] {
+        .info-bar input[type="text"]] {
             padding: 6px 10px;
             border: none;
             border-radius: 4px;
@@ -480,6 +480,27 @@
                     <tbody id="vlBody">
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Section Sport -->
+        <div class="section">
+            <div class="section-title">🏋️‍♂️ SPORT</div>
+            <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                Séance de sport du jour proposée par le référent sport du CIS.
+            </p>
+
+            <p style="font-size: 13px; color: var(--color-gray); margin-bottom: 10px;">
+                Le référent sport doit déposer le fichier de la séance (PDF) dans le même dossier que cette page,
+                sous le nom <strong>seance-sport-du-jour.pdf</strong>. La séance ci-dessous s’adapte automatiquement.
+            </p>
+
+            <div id="sportContainer"
+                 style="border: 1px solid var(--color-border); min-height: 200px; padding: 10px; background: #fafafa;">
+                <p style="font-size: 13px; color: var(--color-gray);">
+                    Aucune séance de sport n'est disponible pour le moment. Vérifiez que le fichier
+                    <code>seance-sport-du-jour.pdf</code> est bien déposé à côté de cette page.
+                </p>
             </div>
         </div>
 
@@ -1148,11 +1169,11 @@
         const gardeDateElement = document.getElementById('gardeDate');
         const date = gardeDateElement && gardeDateElement.value ? gardeDateElement.value : '';
 
-        const destinataire = "matoulet@sdis47.fr"; 
-        const sujet = encodeURIComponent(`PV FMPC complété - Garde du ${date}`);
+        const destinataire = "chef.garde@sdis47.fr"; // à adapter
+        const sujet = encodeURIComponent(`FMPC complété - Garde du ${date}`);
         const corps = encodeURIComponent(
             "Bonjour,\n\n" +
-            "Veuillez trouver ci-joint le PV FMPC complété pour la garde du " + date + ".\n\n" +
+            "Veuillez trouver ci-joint le FMPC complété pour la garde du " + date + ".\n\n" +
             "Cordialement.\n"
         );
 
@@ -1160,9 +1181,27 @@
         window.location.href = mailtoLink;
     }
 
+    // Section Sport : affichage du PDF de séance
+    function renderSportSession() {
+        const container = document.getElementById('sportContainer');
+        if (!container) return;
+
+        const pdfUrl = 'seance-sport-du-jour.pdf';
+
+        container.innerHTML = `
+            <p style="font-size: 13px; color: var(--color-gray); margin-bottom: 8px;">
+                Si la séance n'apparaît pas, vérifiez que le fichier <code>seance-sport-du-jour.pdf</code> est bien présent à côté de cette page.
+            </p>
+            <div style="border: 1px solid var(--color-border); height: 500px; margin-top: 10px;">
+                <iframe src="${pdfUrl}" style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+        `;
+    }
+
     window.onload = function() {
         isFirebaseConfigured = checkFirebaseConfig();
         initDate();
+        renderSportSession();
     };
 </script>
 
