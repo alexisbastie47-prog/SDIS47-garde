@@ -214,14 +214,11 @@
         .btn-success {
             background: var(--color-success);
             color: white;
+            margin-top: 10px;
         }
 
         .btn-success:hover {
             background: #1a6670;
-        }
-
-        .btn-success {
-            margin-top: 10px;
         }
 
         textarea {
@@ -486,49 +483,33 @@
             </div>
         </div>
 
-      <!-- Section FMPC -->
-<div class="section">
-    <div class="section-title">📄 FMPC</div>
-    <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-        Procès-verbal FMPC 2026 à télécharger, compléter puis remettre au service formation du CIS.
-    </p>
-    <div style="margin-bottom: 15px;">
-        <a href="pv-fmpc-2026.pdf" target="_blank"
-           style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
-            📥 Télécharger le PV FMPC 2026
-        </a>
-    </div>
-
-    <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-        Après avoir complété le PV FMPC, enregistrez-le sur votre poste puis utilisez le bouton ci-dessous pour ouvrir un mail pré-rempli dans Outlook et y joindre le fichier.
-    </p>
-
-    <div style="margin-bottom: 10px;">
-        <a id="fmpcMailLink"
-           href="#"
-           class="btn btn-secondary"
-           onclick="openFmpcMail(); return false;">
-            ✉️ Envoyer le PV FMPC complété par mail
-        </a>
-        <span style="font-size: 12px; color: var(--color-gray); margin-left: 8px;">
-            Le fichier devra être joint manuellement dans Outlook.
-        </span>
-    </div>
-</div>
-
-
-        <!-- Section Observations -->
+        <!-- Section FMPC -->
         <div class="section">
-            <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
-            <div class="grid">
-                <div class="form-group">
-                    <label>Observations de la garde :</label>
-                    <textarea id="observations" placeholder="Remarques générales, incidents, points d'attention..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Consignes pour la relève :</label>
-                    <textarea id="consignes" placeholder="Informations importantes à transmettre à la prochaine garde..."></textarea>
-                </div>
+            <div class="section-title">📄 FMPC</div>
+            <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                Procès-verbal FMPC 2026 à télécharger, compléter puis remettre au service formation du CIS.
+            </p>
+            <div style="margin-bottom: 15px;">
+                <a href="pv-fmpc-2026.pdf" target="_blank"
+                   style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                    📥 Télécharger le PV FMPC 2026
+                </a>
+            </div>
+
+            <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                Après avoir complété le PV FMPC, enregistrez-le sur votre poste puis utilisez le bouton ci-dessous pour ouvrir un mail pré-rempli dans Outlook et y joindre le fichier.
+            </p>
+
+            <div style="margin-bottom: 10px;">
+                <a id="fmpcMailLink"
+                   href="#"
+                   class="btn btn-secondary"
+                   onclick="openFmpcMail(); return false;">
+                    ✉️ Envoyer le PV FMPC complété par mail
+                </a>
+                <span style="font-size: 12px; color: var(--color-gray); margin-left: 8px;">
+                    Le fichier devra être joint manuellement dans Outlook.
+                </span>
             </div>
         </div>
 
@@ -562,8 +543,6 @@
             fpt: [],
             uccf: [],
             vl: [],
-            observations: document.getElementById('observations').value,
-            consignes: document.getElementById('consignes').value,
             lastUpdate: new Date().toISOString()
         };
 
@@ -621,8 +600,6 @@
         document.getElementById('fptBody').innerHTML = '';
         document.getElementById('uccfBody').innerHTML = '';
         document.getElementById('vlBody').innerHTML = '';
-        document.getElementById('observations').value = '';
-        document.getElementById('consignes').value = '';
     }
 
     async function loadData() {
@@ -710,9 +687,6 @@
                     });
                 }
             });
-
-            document.getElementById('observations').value = data.observations || '';
-            document.getElementById('consignes').value = data.consignes || '';
         } catch (e) {
             console.error('Erreur lors de la restauration des données:', e);
         }
@@ -1092,13 +1066,12 @@
         closeAgentVerificateurPopup();
     }
 
-    // Firebase Realtime Database uniquement
     const firebaseConfig = {
         apiKey: "AIzaSyBCY1ns4SPRqZ2qtRHhekSp9UsAH17h9is",
         authDomain: "sdis47-garde.firebaseapp.com",
         databaseURL: "https://sdis47-garde-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "sdis47-garde",
-        storageBucket: "sdis47-garde.firebasestorage.app", // ignoré si pas de Storage
+        storageBucket: "sdis47-garde.firebasestorage.app",
         messagingSenderId: "36803710300",
         appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
     };
@@ -1171,13 +1144,12 @@
         }
     }
 
-    // Bouton mail FMPC (Outlook / client mail par défaut)
     function openFmpcMail() {
         const gardeDateElement = document.getElementById('gardeDate');
         const date = gardeDateElement && gardeDateElement.value ? gardeDateElement.value : '';
 
         const destinataire = "matoulet@sdis47.fr"; 
-        const sujet = encodeURIComponent(`FMPC complété - Garde du ${date}`);
+        const sujet = encodeURIComponent(`PV FMPC complété - Garde du ${date}`);
         const corps = encodeURIComponent(
             "Bonjour,\n\n" +
             "Veuillez trouver ci-joint le PV FMPC complété pour la garde du " + date + ".\n\n" +
@@ -1194,7 +1166,6 @@
     };
 </script>
 
-<!-- Firebase SDK v9+ (modular) - Realtime Database uniquement -->
 <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
     import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
