@@ -214,11 +214,14 @@
         .btn-success {
             background: var(--color-success);
             color: white;
-            margin-top: 10px;
         }
 
         .btn-success:hover {
             background: #1a6670;
+        }
+
+        .btn-success {
+            margin-top: 10px;
         }
 
         textarea {
@@ -275,1032 +278,944 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-container">
-                <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/b5dda112-aea7-413a-ac2c-cb7abd85e198" alt="SDIS47">
-            </div>
-            <div class="header-info">
-                <h1>FEUILLE DE GARDE JOURNALIÈRE</h1>
-                <div class="date" id="currentDate"></div>
+<div class="container">
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/b5dda112-aea7-413a-ac2c-cb7abd85e198" alt="SDIS47">
+        </div>
+        <div class="header-info">
+            <h1>FEUILLE DE GARDE JOURNALIÈRE</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+    </div>
+
+    <div class="info-bar">
+        <label>
+            Date de garde :
+            <input type="date" id="gardeDate" onchange="onDateChange()">
+        </label>
+    </div>
+
+    <div class="content">
+        <!-- Section Effectifs -->
+        <div class="section">
+            <div class="section-title">👥 EFFECTIFS DE GARDE</div>
+            <div style="margin-bottom: 15px;">
+                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                    Consultez le planning des effectifs sur Agendis :
+                </p>
+                <a href="#" id="agendisToday" target="_blank"
+                   style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s;">
+                    📅 Planning Agendis du jour
+                </a>
             </div>
         </div>
 
-        <div class="info-bar">
-            <label>
-                Date de garde :
-                <input type="date" id="gardeDate" onchange="onDateChange()">
-            </label>
+        <!-- Section Agent vérificateur -->
+        <div class="section">
+            <div class="section-title">✅ AGENT VÉRIFICATEUR</div>
+            <div style="margin-bottom: 15px;">
+                <button class="btn btn-primary" onclick="openAgentVerificateurPopup()">➕ Ajouter un agent pour une vérification</button>
+            </div>
+            <table id="agentVerificateurTable">
+                <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Véhicule</th>
+                    <th style="width: 80px;">Action</th>
+                </tr>
+                </thead>
+                <tbody id="agentVerificateurBody">
+                </tbody>
+            </table>
         </div>
 
-        <div class="content">
-            <!-- Section Effectifs -->
-            <div class="section">
-                <div class="section-title">👥 EFFECTIFS DE GARDE</div>
-                <div style="margin-bottom: 15px;">
-                    <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-                        Consultez le planning des effectifs sur Agendis :
-                    </p>
-                    <a href="#" id="agendisToday" target="_blank" style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s;">
-                        📅 Planning Agendis du jour
-                    </a>
-                </div>
-            </div>
+        <!-- Section Engins -->
+        <div class="section">
+            <div class="section-title">🚒 ÉTAT DES ENGINS</div>
 
-            <!-- Section Agent vérificateur -->
-            <div class="section">
-                <div class="section-title">✅ AGENT VÉRIFICATEUR</div>
+            <!-- Sous-section VSAV -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSAV</h3>
                 <div style="margin-bottom: 15px;">
-                    <button class="btn btn-primary" onclick="openAgentVerificateurPopup()">➕ Ajouter un agent pour une vérification</button>
+                    <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                        Sélectionner un VSAV à ajouter :
+                    </label>
+                    <select id="vsavSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                        <option value="">-- Choisir un VSAV --</option>
+                        <option value="VSAV 29">VSAV 29</option>
+                        <option value="VSAV 49">VSAV 49</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="addEngin('vsav')">➕ Ajouter l'engin</button>
                 </div>
-                <table id="agentVerificateurTable">
-                    <thead>
+                <div style="overflow-x: auto;">
+                    <table style="min-width: 1400px;">
+                        <thead>
                         <tr>
-                            <th>Agent</th>
-                            <th>Véhicule</th>
-                            <th style="width: 80px;">Action</th>
+                            <th style="min-width: 80px;">Engin</th>
+                            <th style="min-width: 70px;">Carburant</th>
+                            <th style="min-width: 70px;">AdBlue</th>
+                            <th style="min-width: 80px;">Gyrophare</th>
+                            <th style="min-width: 80px;">Éclairage</th>
+                            <th style="min-width: 80px;">O2 Sac 5L</th>
+                            <th style="min-width: 80px;">O2 Cell1 5L</th>
+                            <th style="min-width: 80px;">O2 Cell2 5L</th>
+                            <th style="min-width: 80px;">O2 Cell 15L</th>
+                            <th style="min-width: 90px;">Détect. CO</th>
+                            <th style="min-width: 100px;">Multiparam.</th>
+                            <th style="min-width: 90px;">Aspirateur</th>
+                            <th style="min-width: 90px;">Thermo.</th>
+                            <th style="min-width: 90px;">Glycémie</th>
+                            <th style="min-width: 120px;">Agent</th>
                         </tr>
+                        </thead>
+                        <tbody id="vsavBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sous-section VSR -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSR</h3>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                        Sélectionner un VSR à ajouter :
+                    </label>
+                    <select id="vsrSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                        <option value="">-- Choisir un VSR --</option>
+                        <option value="VSRL 93">VSRL 93</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="addEngin('vsr')">➕ Ajouter l'engin</button>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Engin</th>
+                        <th>Observations</th>
+                        <th style="width: 80px;">Action</th>
+                    </tr>
                     </thead>
-                    <tbody id="agentVerificateurBody">
+                    <tbody id="vsrBody">
                     </tbody>
                 </table>
             </div>
 
-            <!-- Section Engins -->
-            <div class="section">
-                <div class="section-title">🚒 ÉTAT DES ENGINS</div>
-
-                <!-- Sous-section VSAV -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSAV</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            Sélectionner un VSAV à ajouter :
-                        </label>
-                        <select id="vsavSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
-                            <option value="">-- Choisir un VSAV --</option>
-                            <option value="VSAV 29">VSAV 29</option>
-                            <option value="VSAV 49">VSAV 49</option>
-                        </select>
-                        <button class="btn btn-primary" onclick="addEngin('vsav')">➕ Ajouter l'engin</button>
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table style="min-width: 1400px;">
-                            <thead>
-                                <tr>
-                                    <th style="min-width: 80px;">Engin</th>
-                                    <th style="min-width: 70px;">Carburant</th>
-                                    <th style="min-width: 70px;">AdBlue</th>
-                                    <th style="min-width: 80px;">Gyrophare</th>
-                                    <th style="min-width: 80px;">Éclairage</th>
-                                    <th style="min-width: 80px;">O2 Sac 5L</th>
-                                    <th style="min-width: 80px;">O2 Cell1 5L</th>
-                                    <th style="min-width: 80px;">O2 Cell2 5L</th>
-                                    <th style="min-width: 80px;">O2 Cell 15L</th>
-                                    <th style="min-width: 90px;">Détect. CO</th>
-                                    <th style="min-width: 100px;">Multiparam.</th>
-                                    <th style="min-width: 90px;">Aspirateur</th>
-                                    <th style="min-width: 90px;">Thermo.</th>
-                                    <th style="min-width: 90px;">Glycémie</th>
-                                    <th style="min-width: 120px;">Agent</th>
-                                </tr>
-                            </thead>
-                            <tbody id="vsavBody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Sous-section VSR -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VSR</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            Sélectionner un VSR à ajouter :
-                        </label>
-                        <select id="vsrSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
-                            <option value="">-- Choisir un VSR --</option>
-                            <option value="VSRL 93">VSRL 93</option>
-                        </select>
-                        <button class="btn btn-primary" onclick="addEngin('vsr')">➕ Ajouter l'engin</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Engin</th>
-                                <th>Observations</th>
-                                <th style="width: 80px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vsrBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Sous-section FPT -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">FPT</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            Sélectionner un FPT à ajouter :
-                        </label>
-                        <select id="fptSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
-                            <option value="">-- Choisir un FPT --</option>
-                            <option value="FPT 85">FPT 85</option>
-                        </select>
-                        <button class="btn btn-primary" onclick="addEngin('fpt')">➕ Ajouter l'engin</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Engin</th>
-                                <th>Observations</th>
-                                <th style="width: 80px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fptBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Sous-section UCCF -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">UCCF</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            Sélectionner un UCCF à ajouter :
-                        </label>
-                        <select id="uccfSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
-                            <option value="">-- Choisir un UCCF --</option>
-                            <option value="UCCFM 74">UCCFM 74</option>
-                            <option value="UCCFM 75">UCCFM 75</option>
-                            <option value="UCCFS 98">UCCFS 98</option>
-                            <option value="UCCFS 99">UCCFS 99</option>
-                        </select>
-                        <button class="btn btn-primary" onclick="addEngin('uccf')">➕ Ajouter l'engin</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Engin</th>
-                                <th>Observations</th>
-                                <th style="width: 80px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="uccfBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Sous-section VL -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VL</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
-                            Sélectionner un VL à ajouter :
-                        </label>
-                        <select id="vlSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
-                            <option value="">-- Choisir un VL --</option>
-                            <option value="VLRTT 38">VLRTT 38</option>
-                            <option value="VLRTT 45">VLRTT 45</option>
-                            <option value="VLRTT 76">VLRTT 76</option>
-                            <option value="VLU 39">VLU 39</option>
-                        </select>
-                        <button class="btn btn-primary" onclick="addEngin('vl')">➕ Ajouter l'engin</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Engin</th>
-                                <th>Observations</th>
-                                <th style="width: 80px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vlBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Section FMPC -->
-            <div class="section">
-                <div class="section-title">📄 FMPC</div>
-                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-                    Procès-verbal FMPC 2026 à télécharger, compléter puis remettre au chef de garde.
-                </p>
+            <!-- Sous-section FPT -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">FPT</h3>
                 <div style="margin-bottom: 15px;">
-                    <a href="pv-fmpc-2026.pdf" target="_blank"
-                       style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
-                        📥 Télécharger le PV FMPC 2026
-                    </a>
+                    <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                        Sélectionner un FPT à ajouter :
+                    </label>
+                    <select id="fptSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                        <option value="">-- Choisir un FPT --</option>
+                        <option value="FPT 85">FPT 85</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="addEngin('fpt')">➕ Ajouter l'engin</button>
                 </div>
-
-                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-                    Téléverser ici la version complétée au format PDF (stockage Firebase Storage, liée à la date de garde).
-                </p>
-                <div style="margin-bottom: 10px;">
-                    <input type="file" id="fmpcFileInput" accept="application/pdf"
-                           style="margin-bottom: 8px;"
-                           onchange="handleFmpcFileChange(event)">
-                    <button class="btn btn-primary" id="fmpcUploadBtn" onclick="uploadFmpcToStorage()" disabled>
-                        ☁️ Envoyer le FMPC complété
-                    </button>
-                    <span id="fmpcUploadStatus" style="font-size: 13px; color: var(--color-gray); margin-left: 8px;"></span>
-                </div>
-
-                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
-                    Version complétée enregistrée pour cette date (si existante) :
-                </p>
-                <div id="fmpcContainer"
-                     style="border: 1px solid var(--color-border); min-height: 200px; padding: 10px; background: #fafafa;">
-                    <p style="font-size: 13px; color: var(--color-gray);">
-                        Aucun document FMPC complété n'est encore enregistré pour cette date.
-                    </p>
-                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Engin</th>
+                        <th>Observations</th>
+                        <th style="width: 80px;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="fptBody">
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Section Observations -->
-            <div class="section">
-                <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
-                <div class="grid">
-                    <div class="form-group">
-                        <label>Observations de la garde :</label>
-                        <textarea id="observations" placeholder="Remarques générales, incidents, points d'attention..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Consignes pour la relève :</label>
-                        <textarea id="consignes" placeholder="Informations importantes à transmettre à la prochaine garde..."></textarea>
-                    </div>
+            <!-- Sous-section UCCF -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">UCCF</h3>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                        Sélectionner un UCCF à ajouter :
+                    </label>
+                    <select id="uccfSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                        <option value="">-- Choisir un UCCF --</option>
+                        <option value="UCCFM 74">UCCFM 74</option>
+                        <option value="UCCFM 75">UCCFM 75</option>
+                        <option value="UCCFS 98">UCCFS 98</option>
+                        <option value="UCCFS 99">UCCFS 99</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="addEngin('uccf')">➕ Ajouter l'engin</button>
                 </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Engin</th>
+                        <th>Observations</th>
+                        <th style="width: 80px;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="uccfBody">
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Actions -->
-            <div class="actions">
-                <button class="btn btn-success" onclick="window.print()">🖨️ Imprimer la feuille de garde</button>
-                <button class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+            <!-- Sous-section VL -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--color-black); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--color-red);">VL</h3>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 14px; font-weight: 500; color: var(--color-gray); display: block; margin-bottom: 8px;">
+                        Sélectionner un VL à ajouter :
+                    </label>
+                    <select id="vlSelect" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; width: 300px; margin-right: 10px;">
+                        <option value="">-- Choisir un VL --</option>
+                        <option value="VLRTT 38">VLRTT 38</option>
+                        <option value="VLRTT 45">VLRTT 45</option>
+                        <option value="VLRTT 76">VLRTT 76</option>
+                        <option value="VLU 39">VLU 39</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="addEngin('vl')">➕ Ajouter l'engin</button>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Engin</th>
+                        <th>Observations</th>
+                        <th style="width: 80px;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="vlBody">
+                    </tbody>
+                </table>
             </div>
         </div>
+
+        <!-- Section FMPC -->
+        <div class="section">
+            <div class="section-title">📄 FMPC</div>
+            <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                Procès-verbal FMPC 2026 à télécharger, compléter puis remettre au chef de garde.
+            </p>
+            <div style="margin-bottom: 15px;">
+                <a href="pv-fmpc-2026.pdf" target="_blank"
+                   style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                    📥 Télécharger le PV FMPC 2026
+                </a>
+            </div>
+
+            <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                Après avoir complété le FMPC, enregistrez-le sur votre poste puis utilisez le bouton ci-dessous pour ouvrir un mail pré-rempli dans Outlook.
+            </p>
+
+            <div style="margin-bottom: 10px;">
+                <input type="file" id="fmpcFileInput" accept="application/pdf"
+                       style="margin-bottom: 8px;">
+                <br>
+                <a id="fmpcMailLink"
+                   href="#"
+                   class="btn btn-secondary"
+                   onclick="openFmpcMail(); return false;">
+                    ✉️ Envoyer le FMPC complété par mail
+                </a>
+                <span style="font-size: 12px; color: var(--color-gray); margin-left: 8px;">
+                    Le fichier devra être joint manuellement dans Outlook.
+                </span>
+            </div>
+        </div>
+
+        <!-- Section Observations -->
+        <div class="section">
+            <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>Observations de la garde :</label>
+                    <textarea id="observations" placeholder="Remarques générales, incidents, points d'attention..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Consignes pour la relève :</label>
+                    <textarea id="consignes" placeholder="Informations importantes à transmettre à la prochaine garde..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn btn-success" onclick="window.print()">🖨️ Imprimer la feuille de garde</button>
+            <button class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+        </div>
     </div>
+</div>
 
-    <script>
-        const STORAGE_KEY = 'sdis47_feuille_garde';
+<script>
+    const STORAGE_KEY = 'sdis47_feuille_garde';
 
-        function getStorageKey() {
-            const gardeDateElement = document.getElementById('gardeDate');
-            if (!gardeDateElement || !gardeDateElement.value) return STORAGE_KEY;
-            return `${STORAGE_KEY}_${gardeDateElement.value}`;
+    function getStorageKey() {
+        const gardeDateElement = document.getElementById('gardeDate');
+        if (!gardeDateElement || !gardeDateElement.value) return STORAGE_KEY;
+        return `${STORAGE_KEY}_${gardeDateElement.value}`;
+    }
+
+    function saveData() {
+        const gardeDateElement = document.getElementById('gardeDate');
+        if (!gardeDateElement || !gardeDateElement.value) return;
+        const currentDate = gardeDateElement.value;
+
+        const data = {
+            date: currentDate,
+            agentsVerificateurs: [],
+            vsav: [],
+            vsr: [],
+            fpt: [],
+            uccf: [],
+            vl: [],
+            observations: document.getElementById('observations').value,
+            consignes: document.getElementById('consignes').value,
+            lastUpdate: new Date().toISOString()
+        };
+
+        const agentRows = document.getElementById('agentVerificateurBody').rows;
+        for (let row of agentRows) {
+            data.agentsVerificateurs.push({
+                agent: row.cells[0].textContent,
+                vehicule: row.cells[1].textContent
+            });
         }
 
-        function saveData() {
-            const gardeDateElement = document.getElementById('gardeDate');
-            if (!gardeDateElement || !gardeDateElement.value) return;
-            const currentDate = gardeDateElement.value;
+        const vsavRows = document.getElementById('vsavBody').rows;
+        for (let row of vsavRows) {
+            data.vsav.push({
+                engin: row.cells[0].textContent,
+                carburant: row.cells[1].textContent,
+                adblue: row.cells[2].textContent,
+                gyrophare: row.cells[3].textContent,
+                eclairage: row.cells[4].textContent,
+                o2Sac: row.cells[5].textContent,
+                o2Cell1: row.cells[6].textContent,
+                o2Cell2: row.cells[7].textContent,
+                o2Cell15L: row.cells[8].textContent,
+                detecteurCO: row.cells[9].textContent,
+                multiparam: row.cells[10].textContent,
+                aspirateur: row.cells[11].textContent,
+                thermo: row.cells[12].textContent,
+                glycemie: row.cells[13].textContent,
+                agent: row.cells[14].textContent
+            });
+        }
 
-            const data = {
-                date: currentDate,
-                agentsVerificateurs: [],
-                vsav: [],
-                vsr: [],
-                fpt: [],
-                uccf: [],
-                vl: [],
-                observations: document.getElementById('observations').value,
-                consignes: document.getElementById('consignes').value,
-                fmpcUrl: window.currentFmpcUrl || '',
-                lastUpdate: new Date().toISOString()
-            };
+        ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
+            const rows = document.getElementById(category + 'Body').rows;
+            for (let row of rows) {
+                data[category].push({
+                    engin: row.cells[0].textContent,
+                    observations: row.cells[1].querySelector('input') ? row.cells[1].querySelector('input').value : ''
+                });
+            }
+        });
 
-            const agentRows = document.getElementById('agentVerificateurBody').rows;
-            for (let row of agentRows) {
-                data.agentsVerificateurs.push({
-                    agent: row.cells[0].textContent,
-                    vehicule: row.cells[1].textContent
+        localStorage.setItem(getStorageKey(), JSON.stringify(data));
+        console.log('💾 Données sauvegardées localement pour le ' + currentDate);
+
+        if (isFirebaseConfigured) {
+            saveToFirebase(data);
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('agentVerificateurBody').innerHTML = '';
+        document.getElementById('vsavBody').innerHTML = '';
+        document.getElementById('vsrBody').innerHTML = '';
+        document.getElementById('fptBody').innerHTML = '';
+        document.getElementById('uccfBody').innerHTML = '';
+        document.getElementById('vlBody').innerHTML = '';
+        document.getElementById('observations').value = '';
+        document.getElementById('consignes').value = '';
+    }
+
+    async function loadData() {
+        const gardeDateElement = document.getElementById('gardeDate');
+        if (!gardeDateElement || !gardeDateElement.value) return;
+        const currentDate = gardeDateElement.value;
+
+        clearForm();
+
+        if (isFirebaseConfigured) {
+            const firebaseData = await loadFromFirebase(currentDate);
+            if (firebaseData) {
+                console.log('📥 Données chargées depuis Firebase pour le ' + currentDate);
+                restoreData(firebaseData);
+                return;
+            }
+        }
+
+        const savedData = localStorage.getItem(getStorageKey());
+        if (!savedData) {
+            console.log('📋 Aucune donnée pour le ' + currentDate);
+            return;
+        }
+
+        try {
+            const data = JSON.parse(savedData);
+            console.log('📥 Données chargées localement pour le ' + currentDate);
+            restoreData(data);
+        } catch (e) {
+            console.error('Erreur lors du chargement des données:', e);
+        }
+    }
+
+    function restoreData(data) {
+        try {
+            const agentBody = document.getElementById('agentVerificateurBody');
+            agentBody.innerHTML = '';
+            if (data.agentsVerificateurs) {
+                data.agentsVerificateurs.forEach(item => {
+                    const newRow = agentBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${item.agent}</td>
+                        <td>${item.vehicule}</td>
+                        <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+                    `;
                 });
             }
 
-            const vsavRows = document.getElementById('vsavBody').rows;
-            for (let row of vsavRows) {
-                data.vsav.push({
-                    engin: row.cells[0].textContent,
-                    carburant: row.cells[1].textContent,
-                    adblue: row.cells[2].textContent,
-                    gyrophare: row.cells[3].textContent,
-                    eclairage: row.cells[4].textContent,
-                    o2Sac: row.cells[5].textContent,
-                    o2Cell1: row.cells[6].textContent,
-                    o2Cell2: row.cells[7].textContent,
-                    o2Cell15L: row.cells[8].textContent,
-                    detecteurCO: row.cells[9].textContent,
-                    multiparam: row.cells[10].textContent,
-                    aspirateur: row.cells[11].textContent,
-                    thermo: row.cells[12].textContent,
-                    glycemie: row.cells[13].textContent,
-                    agent: row.cells[14].textContent
+            const vsavBody = document.getElementById('vsavBody');
+            vsavBody.innerHTML = '';
+            if (data.vsav) {
+                data.vsav.forEach(item => {
+                    const newRow = vsavBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${item.engin}</td>
+                        <td>${item.carburant}</td>
+                        <td>${item.adblue}</td>
+                        <td>${item.gyrophare}</td>
+                        <td>${item.eclairage}</td>
+                        <td>${item.o2Sac}</td>
+                        <td>${item.o2Cell1}</td>
+                        <td>${item.o2Cell2}</td>
+                        <td>${item.o2Cell15L}</td>
+                        <td>${item.detecteurCO}</td>
+                        <td>${item.multiparam}</td>
+                        <td>${item.aspirateur}</td>
+                        <td>${item.thermo}</td>
+                        <td>${item.glycemie}</td>
+                        <td>${item.agent}</td>
+                    `;
                 });
             }
 
             ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
-                const rows = document.getElementById(category + 'Body').rows;
-                for (let row of rows) {
-                    data[category].push({
-                        engin: row.cells[0].textContent,
-                        observations: row.cells[1].querySelector('input') ? row.cells[1].querySelector('input').value : ''
-                    });
-                }
-            });
-
-            localStorage.setItem(getStorageKey(), JSON.stringify(data));
-            console.log('💾 Données sauvegardées localement pour le ' + currentDate);
-
-            if (isFirebaseConfigured) {
-                saveToFirebase(data);
-            }
-        }
-
-        function clearForm() {
-            document.getElementById('agentVerificateurBody').innerHTML = '';
-            document.getElementById('vsavBody').innerHTML = '';
-            document.getElementById('vsrBody').innerHTML = '';
-            document.getElementById('fptBody').innerHTML = '';
-            document.getElementById('uccfBody').innerHTML = '';
-            document.getElementById('vlBody').innerHTML = '';
-            document.getElementById('observations').value = '';
-            document.getElementById('consignes').value = '';
-            window.currentFmpcUrl = '';
-            renderFmpc();
-        }
-
-        async function loadData() {
-            const gardeDateElement = document.getElementById('gardeDate');
-            if (!gardeDateElement || !gardeDateElement.value) return;
-            const currentDate = gardeDateElement.value;
-
-            clearForm();
-
-            if (isFirebaseConfigured) {
-                const firebaseData = await loadFromFirebase(currentDate);
-                if (firebaseData) {
-                    console.log('📥 Données chargées depuis Firebase pour le ' + currentDate);
-                    restoreData(firebaseData);
-                    return;
-                }
-            }
-
-            const savedData = localStorage.getItem(getStorageKey());
-            if (!savedData) {
-                console.log('📋 Aucune donnée pour le ' + currentDate);
-                return;
-            }
-
-            try {
-                const data = JSON.parse(savedData);
-                console.log('📥 Données chargées localement pour le ' + currentDate);
-                restoreData(data);
-            } catch (e) {
-                console.error('Erreur lors du chargement des données:', e);
-            }
-        }
-
-        function restoreData(data) {
-            try {
-                const agentBody = document.getElementById('agentVerificateurBody');
-                agentBody.innerHTML = '';
-                if (data.agentsVerificateurs) {
-                    data.agentsVerificateurs.forEach(item => {
-                        const newRow = agentBody.insertRow();
+                const tbody = document.getElementById(category + 'Body');
+                tbody.innerHTML = '';
+                if (data[category]) {
+                    data[category].forEach(item => {
+                        const newRow = tbody.insertRow();
                         newRow.innerHTML = `
-                            <td>${item.agent}</td>
-                            <td>${item.vehicule}</td>
+                            <td><strong>${item.engin}</strong></td>
+                            <td><input type="text" placeholder="Remarques" value="${item.observations || ''}" onchange="saveData()"></td>
                             <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
                         `;
                     });
                 }
-
-                const vsavBody = document.getElementById('vsavBody');
-                vsavBody.innerHTML = '';
-                if (data.vsav) {
-                    data.vsav.forEach(item => {
-                        const newRow = vsavBody.insertRow();
-                        newRow.innerHTML = `
-                            <td>${item.engin}</td>
-                            <td>${item.carburant}</td>
-                            <td>${item.adblue}</td>
-                            <td>${item.gyrophare}</td>
-                            <td>${item.eclairage}</td>
-                            <td>${item.o2Sac}</td>
-                            <td>${item.o2Cell1}</td>
-                            <td>${item.o2Cell2}</td>
-                            <td>${item.o2Cell15L}</td>
-                            <td>${item.detecteurCO}</td>
-                            <td>${item.multiparam}</td>
-                            <td>${item.aspirateur}</td>
-                            <td>${item.thermo}</td>
-                            <td>${item.glycemie}</td>
-                            <td>${item.agent}</td>
-                        `;
-                    });
-                }
-
-                ['vsr', 'fpt', 'uccf', 'vl'].forEach(category => {
-                    const tbody = document.getElementById(category + 'Body');
-                    tbody.innerHTML = '';
-                    if (data[category]) {
-                        data[category].forEach(item => {
-                            const newRow = tbody.insertRow();
-                            newRow.innerHTML = `
-                                <td><strong>${item.engin}</strong></td>
-                                <td><input type="text" placeholder="Remarques" value="${item.observations || ''}" onchange="saveData()"></td>
-                            `;
-                        });
-                    }
-                });
-
-                document.getElementById('observations').value = data.observations || '';
-                document.getElementById('consignes').value = data.consignes || '';
-
-                // Restaurer FMPC
-                window.currentFmpcUrl = data.fmpcUrl || '';
-                renderFmpc();
-            } catch (e) {
-                console.error('Erreur lors de la restauration des données:', e);
-            }
-        }
-
-        function renderFmpc() {
-            const container = document.getElementById('fmpcContainer');
-            if (!container) return;
-            const url = window.currentFmpcUrl;
-            if (!url) {
-                container.innerHTML =
-                    "<p style='font-size: 13px; color: var(--color-gray);'>Aucun document FMPC complété n'est encore enregistré pour cette date.</p>";
-                return;
-            }
-            container.innerHTML = `
-                <p style="font-size: 13px; color: var(--color-gray); margin-bottom: 8px;">
-                    Document FMPC complété enregistré pour cette date :
-                </p>
-                <a href="${url}" target="_blank"
-                   style="display: inline-block; background: var(--color-success); color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 13px; margin-bottom: 10px;">
-                    🔍 Ouvrir le FMPC complété
-                </a>
-                <div style="border: 1px solid var(--color-border); height: 500px; margin-top: 10px;">
-                    <iframe src="${url}" style="width: 100%; height: 100%; border: none;"></iframe>
-                </div>
-            `;
-        }
-
-        function initDate() {
-            const today = new Date();
-            updateDateDisplay(today);
-            const inputDate = today.toISOString().split('T')[0];
-            const gardeDateElement = document.getElementById('gardeDate');
-            if (gardeDateElement) {
-                gardeDateElement.value = inputDate;
-            }
-            updateAgendisLinkOnly();
-            loadData();
-        }
-
-        function updateDateDisplay(date) {
-            const dateStr = date.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
             });
-            const currentDateElement = document.getElementById('currentDate');
-            if (currentDateElement) {
-                currentDateElement.textContent = dateStr;
-            }
-        }
 
-        function updateAgendisLinkOnly() {
-            try {
-                const dateInput = document.getElementById('gardeDate');
-                if (!dateInput || !dateInput.value) return;
-                const date = new Date(dateInput.value + 'T12:00:00');
-                const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
-                const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
-                const agendisLink = document.getElementById('agendisToday');
-                if (agendisLink) {
-                    agendisLink.href = baseUrl + formatDate(date);
-                }
-            } catch (error) {
-                console.error('Erreur mise à jour lien Agendis:', error);
-            }
+            document.getElementById('observations').value = data.observations || '';
+            document.getElementById('consignes').value = data.consignes || '';
+        } catch (e) {
+            console.error('Erreur lors de la restauration des données:', e);
         }
+    }
 
-        function onDateChange() {
+    function initDate() {
+        const today = new Date();
+        updateDateDisplay(today);
+        const inputDate = today.toISOString().split('T')[0];
+        const gardeDateElement = document.getElementById('gardeDate');
+        if (gardeDateElement) {
+            gardeDateElement.value = inputDate;
+        }
+        updateAgendisLinkOnly();
+        loadData();
+    }
+
+    function updateDateDisplay(date) {
+        const dateStr = date.toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        const currentDateElement = document.getElementById('currentDate');
+        if (currentDateElement) {
+            currentDateElement.textContent = dateStr;
+        }
+    }
+
+    function updateAgendisLinkOnly() {
+        try {
             const dateInput = document.getElementById('gardeDate');
             if (!dateInput || !dateInput.value) return;
             const date = new Date(dateInput.value + 'T12:00:00');
-            updateDateDisplay(date);
-            updateAgendisLinkOnly();
-            loadData();
-        }
-
-        function addEngin(category) {
-            const selectId = category + 'Select';
-            const select = document.getElementById(selectId);
-            const enginName = select.value;
-            if (!enginName) {
-                alert('Veuillez sélectionner un engin');
-                return;
+            const formatDate = (d) => `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
+            const baseUrl = 'https://srv-agendis.sdis47.fr/Planification/Gardes/PlanningJournalier.aspx?c=37&d=';
+            const agendisLink = document.getElementById('agendisToday');
+            if (agendisLink) {
+                agendisLink.href = baseUrl + formatDate(date);
             }
-            openEnginPopup(enginName, category);
-            select.value = '';
+        } catch (error) {
+            console.error('Erreur mise à jour lien Agendis:', error);
         }
+    }
 
-        function openEnginPopup(enginName, category) {
-            const overlay = document.createElement('div');
-            overlay.id = 'popupOverlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            `;
+    function onDateChange() {
+        const dateInput = document.getElementById('gardeDate');
+        if (!dateInput || !dateInput.value) return;
+        const date = new Date(dateInput.value + 'T12:00:00');
+        updateDateDisplay(date);
+        updateAgendisLinkOnly();
+        loadData();
+    }
 
-            const popup = document.createElement('div');
-            popup.style.cssText = `
-                background: white;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                max-width: 500px;
-                width: 90%;
-            `;
+    function addEngin(category) {
+        const selectId = category + 'Select';
+        const select = document.getElementById(selectId);
+        const enginName = select.value;
+        if (!enginName) {
+            alert('Veuillez sélectionner un engin');
+            return;
+        }
+        openEnginPopup(enginName, category);
+        select.value = '';
+    }
 
-            const vsavContent = category === 'vsav' ? `
+    function openEnginPopup(enginName, category) {
+        const overlay = document.createElement('div');
+        overlay.id = 'popupOverlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        `;
+
+        const popup = document.createElement('div');
+        popup.style.cssText = `
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        `;
+
+        const vsavContent = category === 'vsav' ? `
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Pression O2 bouteille 5L du sac (bars) :
+                </label>
+                <input type="number" id="popupO2Sac" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Pression O2 bouteille 5L de la cellule 1 (bars) :
+                </label>
+                <input type="number" id="popupO2Cellule1" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Pression O2 bouteille 5L de la cellule 2 (bars) :
+                </label>
+                <input type="number" id="popupO2Cellule2" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Pression O2 bouteille 15L de la cellule (bars) :
+                </label>
+                <input type="number" id="popupO2Cellule15L" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Détecteur CO :
+                </label>
+                <select id="popupDetecteurCO" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <option value="present">✅ Présent</option>
+                    <option value="absent">❌ Absent</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Multiparamètres :
+                </label>
+                <select id="popupMultiparametres" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <option value="ok">✅ OK</option>
+                    <option value="nok">❌ NON OK</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Aspirateur de mucosité :
+                </label>
+                <select id="popupAspirateur" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <option value="ok">✅ OK</option>
+                    <option value="nok">❌ NON OK</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Thermomètre :
+                </label>
+                <select id="popupThermometre" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <option value="ok">✅ OK</option>
+                    <option value="nok">❌ NON OK</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                    Lecteur de glycémie :
+                </label>
+                <select id="popupGlycemie" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <option value="ok">✅ OK</option>
+                    <option value="nok">❌ NON OK</option>
+                </select>
+            </div>
+        ` : '';
+
+        popup.innerHTML = `
+            <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
+                Vérification journalière - ${enginName}
+            </h2>
+            <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Pression O2 bouteille 5L du sac (bars) :
+                        Niveau de carburant (%) :
                     </label>
-                    <input type="number" id="popupO2Sac" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <input type="number" id="popupCarburant" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Pression O2 bouteille 5L de la cellule 1 (bars) :
+                        Niveau d'AdBlue (%) :
                     </label>
-                    <input type="number" id="popupO2Cellule1" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <input type="number" id="popupAdBlue" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Pression O2 bouteille 5L de la cellule 2 (bars) :
+                        Gyrophare :
                     </label>
-                    <input type="number" id="popupO2Cellule2" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Pression O2 bouteille 15L de la cellule (bars) :
-                    </label>
-                    <input type="number" id="popupO2Cellule15L" min="0" placeholder="bars" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Détecteur CO :
-                    </label>
-                    <select id="popupDetecteurCO" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="present">✅ Présent</option>
-                        <option value="absent">❌ Absent</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Multiparamètres :
-                    </label>
-                    <select id="popupMultiparametres" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <select id="popupGyrophare" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                         <option value="ok">✅ OK</option>
                         <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Aspirateur de mucosité :
+                        Éclairage :
                     </label>
-                    <select id="popupAspirateur" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                    <select id="popupEclairage" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                         <option value="ok">✅ OK</option>
                         <option value="nok">❌ NON OK</option>
                     </select>
                 </div>
+                ${vsavContent}
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Thermomètre :
+                        Observations :
                     </label>
-                    <select id="popupThermometre" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">✅ OK</option>
-                        <option value="nok">❌ NON OK</option>
-                    </select>
+                    <textarea id="popupObservations" placeholder="Remarques complémentaires..." style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
                 </div>
-                <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                        Lecteur de glycémie :
+                        Nom de l'agent :
                     </label>
-                    <select id="popupGlycemie" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                        <option value="ok">✅ OK</option>
-                        <option value="nok">❌ NON OK</option>
-                    </select>
+                    <input type="text" id="popupAgent" placeholder="Nom et prénom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
                 </div>
-            ` : '';
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
+                <button class="btn btn-secondary" onclick="closeEnginPopup()">Annuler</button>
+                <button class="btn btn-primary" onclick="saveEnginFromPopup('${enginName}', '${category}')">Ajouter</button>
+            </div>
+        `;
 
-            popup.innerHTML = `
-                <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
-                    Vérification journalière - ${enginName}
-                </h2>
-                <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Niveau de carburant (%) :
-                        </label>
-                        <input type="number" id="popupCarburant" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Niveau d'AdBlue (%) :
-                        </label>
-                        <input type="number" id="popupAdBlue" min="0" max="100" placeholder="%" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Gyrophare :
-                        </label>
-                        <select id="popupGyrophare" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="ok">✅ OK</option>
-                            <option value="nok">❌ NON OK</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Éclairage :
-                        </label>
-                        <select id="popupEclairage" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="ok">✅ OK</option>
-                            <option value="nok">❌ NON OK</option>
-                        </select>
-                    </div>
-                    ${vsavContent}
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Observations :
-                        </label>
-                        <textarea id="popupObservations" placeholder="Remarques complémentaires..." style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Nom de l'agent :
-                        </label>
-                        <input type="text" id="popupAgent" placeholder="Nom et prénom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                    </div>
-                </div>
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
-                    <button class="btn btn-secondary" onclick="closeEnginPopup()">Annuler</button>
-                    <button class="btn btn-primary" onclick="saveEnginFromPopup('${enginName}', '${category}')">Ajouter</button>
-                </div>
-            `;
+        overlay.appendChild(popup);
+        document.body.appendChild(overlay);
+    }
 
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-        }
+    function saveEnginFromPopup(enginName, category) {
+        const carburant = document.getElementById('popupCarburant').value;
+        const adblue = document.getElementById('popupAdBlue').value;
+        const gyrophare = document.getElementById('popupGyrophare').value;
+        const eclairage = document.getElementById('popupEclairage').value;
+        const observationsSupp = document.getElementById('popupObservations').value;
+        const agent = document.getElementById('popupAgent').value;
 
-        function saveEnginFromPopup(enginName, category) {
-            const carburant = document.getElementById('popupCarburant').value;
-            const adblue = document.getElementById('popupAdBlue').value;
-            const gyrophare = document.getElementById('popupGyrophare').value;
-            const eclairage = document.getElementById('popupEclairage').value;
-            const observationsSupp = document.getElementById('popupObservations').value;
-            const agent = document.getElementById('popupAgent').value;
+        let observations = [];
+        if (carburant) observations.push(`Carburant: ${carburant}%`);
+        if (adblue) observations.push(`AdBlue: ${adblue}%`);
+        observations.push(`Gyro: ${gyrophare === 'ok' ? 'OK' : 'NON OK'}`);
+        observations.push(`Éclairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
+        if (observationsSupp) observations.push(`Obs: ${observationsSupp}`);
 
-            let observations = [];
-            if (carburant) observations.push(`Carburant: ${carburant}%`);
-            if (adblue) observations.push(`AdBlue: ${adblue}%`);
-            observations.push(`Gyro: ${gyrophare === 'ok' ? 'OK' : 'NON OK'}`);
-            observations.push(`Éclairage: ${eclairage === 'ok' ? 'OK' : 'NON OK'}`);
-            if (observationsSupp) observations.push(`Obs: ${observationsSupp}`);
+        const tbodyId = category + 'Body';
+        const tbody = document.getElementById(tbodyId);
+        const newRow = tbody.insertRow();
 
-            const tbodyId = category + 'Body';
-            const tbody = document.getElementById(tbodyId);
-            const newRow = tbody.insertRow();
+        if (category === 'vsav') {
+            const o2Sac = document.getElementById('popupO2Sac').value;
+            const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
+            const o2Cellule2 = document.getElementById('popupO2Cellule2').value;
+            const o2Cellule15L = document.getElementById('popupO2Cellule15L').value;
+            const detecteurCO = document.getElementById('popupDetecteurCO').value;
+            const multiparametres = document.getElementById('popupMultiparametres').value;
+            const aspirateur = document.getElementById('popupAspirateur').value;
+            const thermometre = document.getElementById('popupThermometre').value;
+            const glycemie = document.getElementById('popupGlycemie').value;
 
-            if (category === 'vsav') {
-                const o2Sac = document.getElementById('popupO2Sac').value;
-                const o2Cellule1 = document.getElementById('popupO2Cellule1').value;
-                const o2Cellule2 = document.getElementById('popupO2Cellule2').value;
-                const o2Cellule15L = document.getElementById('popupO2Cellule15L').value;
-                const detecteurCO = document.getElementById('popupDetecteurCO').value;
-                const multiparametres = document.getElementById('popupMultiparametres').value;
-                const aspirateur = document.getElementById('popupAspirateur').value;
-                const thermometre = document.getElementById('popupThermometre').value;
-                const glycemie = document.getElementById('popupGlycemie').value;
-
-                newRow.innerHTML = `
-                    <td><strong>${enginName}</strong></td>
-                    <td>${carburant ? carburant + '%' : '-'}</td>
-                    <td>${adblue ? adblue + '%' : '-'}</td>
-                    <td>${gyrophare === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${eclairage === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${o2Sac ? o2Sac + ' bars' : '-'}</td>
-                    <td>${o2Cellule1 ? o2Cellule1 + ' bars' : '-'}</td>
-                    <td>${o2Cellule2 ? o2Cellule2 + ' bars' : '-'}</td>
-                    <td>${o2Cellule15L ? o2Cellule15L + ' bars' : '-'}</td>
-                    <td>${detecteurCO === 'present' ? '✅ Présent' : '❌ Absent'}</td>
-                    <td>${multiparametres === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${aspirateur === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${thermometre === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${glycemie === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
-                    <td>${agent || '-'}</td>
-                `;
-            } else {
-                newRow.innerHTML = `
-                    <td><strong>${enginName}</strong></td>
-                    <td><input type="text" placeholder="Remarques" value="${observations.join(' | ')}" onchange="saveData()"></td>
-                `;
-            }
-
-            saveData();
-            closeEnginPopup();
-        }
-
-        function closeEnginPopup() {
-            const overlay = document.getElementById('popupOverlay');
-            if (overlay) overlay.remove();
-        }
-
-        function openAgentVerificateurPopup() {
-            const overlay = document.createElement('div');
-            overlay.id = 'popupOverlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            `;
-
-            const popup = document.createElement('div');
-            popup.style.cssText = `
-                background: white;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                max-width: 500px;
-                width: 90%;
-            `;
-
-            popup.innerHTML = `
-                <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
-                    Ajouter un agent vérificateur
-                </h2>
-                <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Véhicule :
-                        </label>
-                        <select id="popupVehicule" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                            <option value="">-- Sélectionner un véhicule --</option>
-                            <option value="VSAV 29">VSAV 29</option>
-                            <option value="VSAV 49">VSAV 49</option>
-                            <option value="VSRL 93">VSRL 93</option>
-                            <option value="FPT 85">FPT 85</option>
-                            <option value="UCCFM 74">UCCFM 74</option>
-                            <option value="UCCFM 75">UCCFM 75</option>
-                            <option value="UCCFS 98">UCCFS 98</option>
-                            <option value="UCCFS 99">UCCFS 99</option>
-                            <option value="VLRTT 38">VLRTT 38</option>
-                            <option value="VLRTT 45">VLRTT 45</option>
-                            <option value="VLRTT 76">VLRTT 76</option>
-                            <option value="VLU 39">VLU 39</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
-                            Agent (Prénom et Nom) :
-                        </label>
-                        <input type="text" id="popupAgentVerif" placeholder="Prénom et nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
-                    </div>
-                </div>
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
-                    <button class="btn btn-secondary" onclick="closeAgentVerificateurPopup()">Annuler</button>
-                    <button class="btn btn-primary" onclick="saveAgentVerificateur()">Ajouter</button>
-                </div>
-            `;
-
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-        }
-
-        function closeAgentVerificateurPopup() {
-            const overlay = document.getElementById('popupOverlay');
-            if (overlay) overlay.remove();
-        }
-
-        function saveAgentVerificateur() {
-            const vehicule = document.getElementById('popupVehicule').value;
-            const agent = document.getElementById('popupAgentVerif').value;
-            if (!vehicule || !agent) {
-                alert('Veuillez remplir tous les champs');
-                return;
-            }
-            const tbody = document.getElementById('agentVerificateurBody');
-            const newRow = tbody.insertRow();
             newRow.innerHTML = `
-                <td>${agent}</td>
-                <td>${vehicule}</td>
+                <td><strong>${enginName}</strong></td>
+                <td>${carburant ? carburant + '%' : '-'}</td>
+                <td>${adblue ? adblue + '%' : '-'}</td>
+                <td>${gyrophare === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${eclairage === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${o2Sac ? o2Sac + ' bars' : '-'}</td>
+                <td>${o2Cellule1 ? o2Cellule1 + ' bars' : '-'}</td>
+                <td>${o2Cellule2 ? o2Cellule2 + ' bars' : '-'}</td>
+                <td>${o2Cellule15L ? o2Cellule15L + ' bars' : '-'}</td>
+                <td>${detecteurCO === 'present' ? '✅ Présent' : '❌ Absent'}</td>
+                <td>${multiparametres === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${aspirateur === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${thermometre === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${glycemie === 'ok' ? '✅ OK' : '❌ NON OK'}</td>
+                <td>${agent || '-'}</td>
+            `;
+        } else {
+            newRow.innerHTML = `
+                <td><strong>${enginName}</strong></td>
+                <td><input type="text" placeholder="Remarques" value="${observations.join(' | ')}" onchange="saveData()"></td>
                 <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
             `;
-            saveData();
-            closeAgentVerificateurPopup();
         }
 
-        const firebaseConfig = {
-  apiKey: "AIzaSyBUF1yYxOQvqAFkfvy81n9UZGQLlb0kFZo",
-  authDomain: "sdis47-garde-c70a2.firebaseapp.com",
-  projectId: "sdis47-garde-c70a2",
-  storageBucket: "sdis47-garde-c70a2.firebasestorage.app",
-  messagingSenderId: "483079835311",
-  appId: "1:483079835311:web:452f6d188c60328f02ce5a",
-  measurementId: "G-312BHZC1GB"
-};
-        let db = null;
-        let isFirebaseConfigured = true;
+        saveData();
+        closeEnginPopup();
+    }
 
-        function checkFirebaseConfig() {
-            return firebaseConfig.apiKey !== "VOTRE_API_KEY";
+    function closeEnginPopup() {
+        const overlay = document.getElementById('popupOverlay');
+        if (overlay) overlay.remove();
+    }
+
+    function openAgentVerificateurPopup() {
+        const overlay = document.createElement('div');
+        overlay.id = 'popupOverlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        `;
+
+        const popup = document.createElement('div');
+        popup.style.cssText = `
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        `;
+
+        popup.innerHTML = `
+            <h2 style="margin: 0 0 20px 0; color: var(--color-black); font-size: 20px;">
+                Ajouter un agent vérificateur
+            </h2>
+            <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Véhicule :
+                    </label>
+                    <select id="popupVehicule" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                        <option value="">-- Sélectionner un véhicule --</option>
+                        <option value="VSAV 29">VSAV 29</option>
+                        <option value="VSAV 49">VSAV 49</option>
+                        <option value="VSRL 93">VSRL 93</option>
+                        <option value="FPT 85">FPT 85</option>
+                        <option value="UCCFM 74">UCCFM 74</option>
+                        <option value="UCCFM 75">UCCFM 75</option>
+                        <option value="UCCFS 98">UCCFS 98</option>
+                        <option value="UCCFS 99">UCCFS 99</option>
+                        <option value="VLRTT 38">VLRTT 38</option>
+                        <option value="VLRTT 45">VLRTT 45</option>
+                        <option value="VLRTT 76">VLRTT 76</option>
+                        <option value="VLU 39">VLU 39</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-gray);">
+                        Agent (Prénom et Nom) :
+                    </label>
+                    <input type="text" id="popupAgentVerif" placeholder="Prénom et nom de l'agent" style="width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; font-size: 14px;">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
+                <button class="btn btn-secondary" onclick="closeAgentVerificateurPopup()">Annuler</button>
+                <button class="btn btn-primary" onclick="saveAgentVerificateur()">Ajouter</button>
+            </div>
+        `;
+
+        overlay.appendChild(popup);
+        document.body.appendChild(overlay);
+    }
+
+    function closeAgentVerificateurPopup() {
+        const overlay = document.getElementById('popupOverlay');
+        if (overlay) overlay.remove();
+    }
+
+    function saveAgentVerificateur() {
+        const vehicule = document.getElementById('popupVehicule').value;
+        const agent = document.getElementById('popupAgentVerif').value;
+        if (!vehicule || !agent) {
+            alert('Veuillez remplir tous les champs');
+            return;
         }
+        const tbody = document.getElementById('agentVerificateurBody');
+        const newRow = tbody.insertRow();
+        newRow.innerHTML = `
+            <td>${agent}</td>
+            <td>${vehicule}</td>
+            <td><button class="btn btn-secondary" onclick="removeRow(this); saveData();">❌</button></td>
+        `;
+        saveData();
+        closeAgentVerificateurPopup();
+    }
 
-        function saveToFirebase(data) {
-            if (!window.db) return;
-            const dateKey = data.date.replace(/-/g, '_');
-            const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
-            window.dbSet(dataRef, data)
-                .then(() => {
-                    console.log('✅ Données sauvegardées dans Firebase');
-                })
-                .catch((error) => {
-                    console.error('❌ Erreur Firebase:', error);
-                    alert('Erreur lors de la sauvegarde en ligne. Données sauvegardées localement.');
-                });
+    // Firebase Realtime Database uniquement
+    const firebaseConfig = {
+        apiKey: "AIzaSyBCY1ns4SPRqZ2qtRHhekSp9UsAH17h9is",
+        authDomain: "sdis47-garde.firebaseapp.com",
+        databaseURL: "https://sdis47-garde-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "sdis47-garde",
+        storageBucket: "sdis47-garde.firebasestorage.app", // ignoré si pas de Storage
+        messagingSenderId: "36803710300",
+        appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
+    };
+
+    let db = null;
+    let isFirebaseConfigured = true;
+
+    function checkFirebaseConfig() {
+        return firebaseConfig.apiKey !== "VOTRE_API_KEY";
+    }
+
+    function saveToFirebase(data) {
+        if (!window.db) return;
+        const dateKey = data.date.replace(/-/g, '_');
+        const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
+        window.dbSet(dataRef, data)
+            .then(() => {
+                console.log('✅ Données sauvegardées dans Firebase');
+            })
+            .catch((error) => {
+                console.error('❌ Erreur Firebase:', error);
+                alert('Erreur lors de la sauvegarde en ligne. Données sauvegardées localement.');
+            });
+    }
+
+    function loadFromFirebase(date) {
+        if (!window.isFirebaseConfigured || !window.db) {
+            return Promise.resolve(null);
         }
+        const dateKey = date.replace(/-/g, '_');
+        const dbRefRoot = window.dbRef(window.db);
+        return window.dbGet(window.dbChild(dbRefRoot, 'feuilles_garde/' + dateKey))
+            .then((snapshot) => snapshot.val())
+            .catch((error) => {
+                console.error('❌ Erreur chargement Firebase:', error);
+                return null;
+            });
+    }
 
-        function loadFromFirebase(date) {
-            if (!window.isFirebaseConfigured || !window.db) {
-                return Promise.resolve(null);
-            }
-            const dateKey = date.replace(/-/g, '_');
-            const dbRefRoot = window.dbRef(window.db);
-            return window.dbGet(window.dbChild(dbRefRoot, 'feuilles_garde/' + dateKey))
-                .then((snapshot) => snapshot.val())
-                .catch((error) => {
-                    console.error('❌ Erreur chargement Firebase:', error);
-                    return null;
-                });
-        }
-
-        function removeRow(button) {
-            const row = button.parentElement.parentElement;
-            const tbody = row.parentElement;
-            row.remove();
-            if (tbody.id === 'effectifsBody') {
-                const rows = tbody.rows;
-                for (let i = 0; i < rows.length; i++) {
-                    rows[i].cells[0].textContent = i + 1;
-                }
-            }
-        }
-
-        function updateRowStatus(select) {
-            const row = select.parentElement.parentElement;
-            row.className = '';
-            if (select.value === 'ok') row.classList.add('status-ok');
-            else if (select.value === 'alert') row.classList.add('status-alert');
-            else if (select.value === 'error') row.classList.add('status-error');
-        }
-
-        function resetForm() {
-            if (confirm('Êtes-vous sûr de vouloir réinitialiser la feuille de garde pour cette date ?')) {
-                localStorage.removeItem(getStorageKey());
-                if (isFirebaseConfigured && window.db) {
-                    const currentDate = document.getElementById('gardeDate').value;
-                    const dateKey = currentDate.replace(/-/g, '_');
-                    const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
-                    window.dbSet(dataRef, null).catch(e => console.error('Erreur suppression Firebase:', e));
-                }
-                clearForm();
-            }
-        }
-
-        // FMPC upload helpers
-        let fmpcFileToUpload = null;
-
-        function handleFmpcFileChange(event) {
-            const file = event.target.files[0];
-            const status = document.getElementById('fmpcUploadStatus');
-            const btn = document.getElementById('fmpcUploadBtn');
-
-            if (!file) {
-                fmpcFileToUpload = null;
-                btn.disabled = true;
-                status.textContent = '';
-                return;
-            }
-            if (file.type !== 'application/pdf') {
-                alert('Merci de sélectionner un fichier PDF.');
-                event.target.value = '';
-                fmpcFileToUpload = null;
-                btn.disabled = true;
-                status.textContent = '';
-                return;
-            }
-
-            fmpcFileToUpload = file;
-            btn.disabled = false;
-            status.textContent = `Prêt à envoyer : ${file.name}`;
-        }
-
-        async function uploadFmpcToStorage() {
-            const gardeDateElement = document.getElementById('gardeDate');
-            const status = document.getElementById('fmpcUploadStatus');
-            if (!gardeDateElement || !gardeDateElement.value) {
-                alert('Veuillez d\'abord sélectionner une date de garde.');
-                return;
-            }
-            if (!fmpcFileToUpload) {
-                alert('Aucun fichier FMPC sélectionné.');
-                return;
-            }
-            if (!window.isFirebaseConfigured || !window.storage || !window.storageRef || !window.storageUploadBytes || !window.storageGetDownloadURL) {
-                alert('Firebase Storage non disponible. Vérifiez la configuration.');
-                return;
-            }
-
-            const dateKey = gardeDateElement.value.replace(/-/g, '_');
-            const filePath = `fmpc/${dateKey}.pdf`;
-            const refFile = window.storageRef(window.storage, filePath);
-
-            status.textContent = 'Téléversement en cours...';
-            document.getElementById('fmpcUploadBtn').disabled = true;
-
-            try {
-                await window.storageUploadBytes(refFile, fmpcFileToUpload);
-                const url = await window.storageGetDownloadURL(refFile);
-                window.currentFmpcUrl = url;
-                renderFmpc();
-                saveData();
-                status.textContent = '✅ FMPC téléversé et enregistré.';
-                document.getElementById('fmpcFileInput').value = '';
-                fmpcFileToUpload = null;
-            } catch (e) {
-                console.error('Erreur upload FMPC:', e);
-                status.textContent = '❌ Erreur lors du téléversement.';
-            } finally {
-                document.getElementById('fmpcUploadBtn').disabled = false;
-            }
-        }
-
-        window.onload = function() {
-            isFirebaseConfigured = checkFirebaseConfig();
-            if (isFirebaseConfigured) console.log('✅ Firebase configuré, chargement du SDK...');
-            else console.log('⚠️ Firebase non configuré.');
-            initDate();
-        };
-    </script>
-
-    <!-- Firebase SDK v9+ (modular) + Storage -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-        import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
-        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js';
-
-        if (isFirebaseConfigured) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                window.db = getDatabase(app);
-                window.dbRef = ref;
-                window.dbSet = set;
-                window.dbGet = get;
-                window.dbChild = child;
-
-                window.storage = getStorage(app);
-                window.storageRef = sRef;
-                window.storageUploadBytes = uploadBytes;
-                window.storageGetDownloadURL = getDownloadURL;
-
-                console.log('✅ Firebase (Database + Storage) initialisé avec succès');
-            } catch (error) {
-                console.error('❌ Erreur initialisation Firebase:', error);
-                window.isFirebaseConfigured = false;
+    function removeRow(button) {
+        const row = button.parentElement.parentElement;
+        const tbody = row.parentElement;
+        row.remove();
+        if (tbody.id === 'effectifsBody') {
+            const rows = tbody.rows;
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
             }
         }
-    </script>
+    }
+
+    function updateRowStatus(select) {
+        const row = select.parentElement.parentElement;
+        row.className = '';
+        if (select.value === 'ok') row.classList.add('status-ok');
+        else if (select.value === 'alert') row.classList.add('status-alert');
+        else if (select.value === 'error') row.classList.add('status-error');
+    }
+
+    function resetForm() {
+        if (confirm('Êtes-vous sûr de vouloir réinitialiser la feuille de garde pour cette date ?')) {
+            localStorage.removeItem(getStorageKey());
+            if (isFirebaseConfigured && window.db) {
+                const currentDate = document.getElementById('gardeDate').value;
+                const dateKey = currentDate.replace(/-/g, '_');
+                const dataRef = window.dbRef(window.db, 'feuilles_garde/' + dateKey);
+                window.dbSet(dataRef, null).catch(e => console.error('Erreur suppression Firebase:', e));
+            }
+            clearForm();
+        }
+    }
+
+    // Bouton mail FMPC (Outlook / client mail par défaut)
+    function openFmpcMail() {
+        const gardeDateElement = document.getElementById('gardeDate');
+        const date = gardeDateElement && gardeDateElement.value ? gardeDateElement.value : '';
+
+        const destinataire = "chef.garde@sdis47.fr"; // à adapter
+        const sujet = encodeURIComponent(`FMPC complété - Garde du ${date}`);
+        const corps = encodeURIComponent(
+            "Bonjour,\n\n" +
+            "Veuillez trouver ci-joint le FMPC complété pour la garde du " + date + ".\n\n" +
+            "Cordialement.\n"
+        );
+
+        const mailtoLink = `mailto:${destinataire}?subject=${sujet}&body=${corps}`;
+        window.location.href = mailtoLink;
+    }
+
+    window.onload = function() {
+        isFirebaseConfigured = checkFirebaseConfig();
+        initDate();
+    };
+</script>
+
+<!-- Firebase SDK v9+ (modular) - Realtime Database uniquement -->
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+    import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+
+    if (isFirebaseConfigured) {
+        try {
+            const app = initializeApp(firebaseConfig);
+            window.db = getDatabase(app);
+            window.dbRef = ref;
+            window.dbSet = set;
+            window.dbGet = get;
+            window.dbChild = child;
+
+            console.log('✅ Firebase (Database) initialisé avec succès');
+        } catch (error) {
+            console.error('❌ Erreur initialisation Firebase:', error);
+            window.isFirebaseConfigured = false;
+        }
+    }
+</script>
 </body>
 </html>
