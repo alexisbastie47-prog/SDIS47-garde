@@ -1178,11 +1178,11 @@
         const gardeDateElement = document.getElementById('gardeDate');
         const date = gardeDateElement && gardeDateElement.value ? gardeDateElement.value : '';
 
-        const destinataire = "chef.garde@sdis47.fr"; // à adapter
+        const destinataire = "matoulet@sdis47.fr"; 
         const sujet = encodeURIComponent(`FMPC complété - Garde du ${date}`);
         const corps = encodeURIComponent(
             "Bonjour,\n\n" +
-            "Veuillez trouver ci-joint le FMPC complété pour la garde du " + date + ".\n\n" +
+            "Veuillez trouver ci-joint le PV FMPC complété pour la garde du " + date + ".\n\n" +
             "Cordialement.\n"
         );
 
