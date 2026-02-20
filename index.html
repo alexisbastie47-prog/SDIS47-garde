@@ -482,6 +482,43 @@
                 </div>
             </div>
 
+            <!-- Section FMPC -->
+            <div class="section">
+                <div class="section-title">📄 FMPC</div>
+                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                    Procès-verbal FMPC 2026 à télécharger, compléter puis remettre au chef de garde.
+                </p>
+                <div style="margin-bottom: 15px;">
+                    <a href="pv-fmpc-2026.pdf" target="_blank"
+                       style="display: inline-block; background: var(--color-red); color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                        📥 Télécharger le PV FMPC 2026
+                    </a>
+                </div>
+
+                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                    Téléverser ici la version complétée au format PDF (stockage Firebase Storage, liée à la date de garde).
+                </p>
+                <div style="margin-bottom: 10px;">
+                    <input type="file" id="fmpcFileInput" accept="application/pdf"
+                           style="margin-bottom: 8px;"
+                           onchange="handleFmpcFileChange(event)">
+                    <button class="btn btn-primary" id="fmpcUploadBtn" onclick="uploadFmpcToStorage()" disabled>
+                        ☁️ Envoyer le FMPC complété
+                    </button>
+                    <span id="fmpcUploadStatus" style="font-size: 13px; color: var(--color-gray); margin-left: 8px;"></span>
+                </div>
+
+                <p style="font-size: 14px; color: var(--color-gray); margin-bottom: 10px;">
+                    Version complétée enregistrée pour cette date (si existante) :
+                </p>
+                <div id="fmpcContainer"
+                     style="border: 1px solid var(--color-border); min-height: 200px; padding: 10px; background: #fafafa;">
+                    <p style="font-size: 13px; color: var(--color-gray);">
+                        Aucun document FMPC complété n'est encore enregistré pour cette date.
+                    </p>
+                </div>
+            </div>
+
             <!-- Section Observations -->
             <div class="section">
                 <div class="section-title">📝 OBSERVATIONS ET CONSIGNES</div>
@@ -529,6 +566,7 @@
                 vl: [],
                 observations: document.getElementById('observations').value,
                 consignes: document.getElementById('consignes').value,
+                fmpcUrl: window.currentFmpcUrl || '',
                 lastUpdate: new Date().toISOString()
             };
 
@@ -588,6 +626,8 @@
             document.getElementById('vlBody').innerHTML = '';
             document.getElementById('observations').value = '';
             document.getElementById('consignes').value = '';
+            window.currentFmpcUrl = '';
+            renderFmpc();
         }
 
         async function loadData() {
@@ -677,9 +717,36 @@
 
                 document.getElementById('observations').value = data.observations || '';
                 document.getElementById('consignes').value = data.consignes || '';
+
+                // Restaurer FMPC
+                window.currentFmpcUrl = data.fmpcUrl || '';
+                renderFmpc();
             } catch (e) {
                 console.error('Erreur lors de la restauration des données:', e);
             }
+        }
+
+        function renderFmpc() {
+            const container = document.getElementById('fmpcContainer');
+            if (!container) return;
+            const url = window.currentFmpcUrl;
+            if (!url) {
+                container.innerHTML =
+                    "<p style='font-size: 13px; color: var(--color-gray);'>Aucun document FMPC complété n'est encore enregistré pour cette date.</p>";
+                return;
+            }
+            container.innerHTML = `
+                <p style="font-size: 13px; color: var(--color-gray); margin-bottom: 8px;">
+                    Document FMPC complété enregistré pour cette date :
+                </p>
+                <a href="${url}" target="_blank"
+                   style="display: inline-block; background: var(--color-success); color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 13px; margin-bottom: 10px;">
+                    🔍 Ouvrir le FMPC complété
+                </a>
+                <div style="border: 1px solid var(--color-border); height: 500px; margin-top: 10px;">
+                    <iframe src="${url}" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            `;
         }
 
         function initDate() {
@@ -1060,7 +1127,7 @@
             authDomain: "sdis47-garde.firebaseapp.com",
             databaseURL: "https://sdis47-garde-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "sdis47-garde",
-            storageBucket: "sdis47-garde.firebasestorage.app",
+            storageBucket: "sdis47-garde.appspot.com",
             messagingSenderId: "36803710300",
             appId: "1:36803710300:web:558dca60c10f7a9a0fc599"
         };
@@ -1133,6 +1200,74 @@
             }
         }
 
+        // FMPC upload helpers
+        let fmpcFileToUpload = null;
+
+        function handleFmpcFileChange(event) {
+            const file = event.target.files[0];
+            const status = document.getElementById('fmpcUploadStatus');
+            const btn = document.getElementById('fmpcUploadBtn');
+
+            if (!file) {
+                fmpcFileToUpload = null;
+                btn.disabled = true;
+                status.textContent = '';
+                return;
+            }
+            if (file.type !== 'application/pdf') {
+                alert('Merci de sélectionner un fichier PDF.');
+                event.target.value = '';
+                fmpcFileToUpload = null;
+                btn.disabled = true;
+                status.textContent = '';
+                return;
+            }
+
+            fmpcFileToUpload = file;
+            btn.disabled = false;
+            status.textContent = `Prêt à envoyer : ${file.name}`;
+        }
+
+        async function uploadFmpcToStorage() {
+            const gardeDateElement = document.getElementById('gardeDate');
+            const status = document.getElementById('fmpcUploadStatus');
+            if (!gardeDateElement || !gardeDateElement.value) {
+                alert('Veuillez d\'abord sélectionner une date de garde.');
+                return;
+            }
+            if (!fmpcFileToUpload) {
+                alert('Aucun fichier FMPC sélectionné.');
+                return;
+            }
+            if (!window.isFirebaseConfigured || !window.storage || !window.storageRef || !window.storageUploadBytes || !window.storageGetDownloadURL) {
+                alert('Firebase Storage non disponible. Vérifiez la configuration.');
+                return;
+            }
+
+            const dateKey = gardeDateElement.value.replace(/-/g, '_');
+            const filePath = `fmpc/${dateKey}.pdf`;
+            const refFile = window.storageRef(window.storage, filePath);
+
+            status.textContent = 'Téléversement en cours...';
+            document.getElementById('fmpcUploadBtn').disabled = true;
+
+            try {
+                await window.storageUploadBytes(refFile, fmpcFileToUpload);
+                const url = await window.storageGetDownloadURL(refFile);
+                window.currentFmpcUrl = url;
+                renderFmpc();
+                saveData();
+                status.textContent = '✅ FMPC téléversé et enregistré.';
+                document.getElementById('fmpcFileInput').value = '';
+                fmpcFileToUpload = null;
+            } catch (e) {
+                console.error('Erreur upload FMPC:', e);
+                status.textContent = '❌ Erreur lors du téléversement.';
+            } finally {
+                document.getElementById('fmpcUploadBtn').disabled = false;
+            }
+        }
+
         window.onload = function() {
             isFirebaseConfigured = checkFirebaseConfig();
             if (isFirebaseConfigured) console.log('✅ Firebase configuré, chargement du SDK...');
@@ -1141,9 +1276,11 @@
         };
     </script>
 
+    <!-- Firebase SDK v9+ (modular) + Storage -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getDatabase, ref, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js';
 
         if (isFirebaseConfigured) {
             try {
@@ -1153,7 +1290,13 @@
                 window.dbSet = set;
                 window.dbGet = get;
                 window.dbChild = child;
-                console.log('✅ Firebase initialisé avec succès');
+
+                window.storage = getStorage(app);
+                window.storageRef = sRef;
+                window.storageUploadBytes = uploadBytes;
+                window.storageGetDownloadURL = getDownloadURL;
+
+                console.log('✅ Firebase (Database + Storage) initialisé avec succès');
             } catch (error) {
                 console.error('❌ Erreur initialisation Firebase:', error);
                 window.isFirebaseConfigured = false;
